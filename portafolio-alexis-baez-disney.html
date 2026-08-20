@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexis Baez — Portafolio de Conceptos Creativos / Creative Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14120f;
+    --paper:#f5efe2;
+    --paper-dim:#e9e1cd;
+    --brass:#c9a227;
+    --brass-soft:#e3c766;
+    --line: rgba(245,239,226,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--brass); color:var(--ink); }
+
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--brass-soft);
+  }
+
+  /* ===== LANGUAGE TOGGLE ===== */
+  .t-en{ display:none; }
+  html.en .t-es{ display:none; }
+  html.en .t-en{ display:inline; }
+  html.en p .t-en, html.en .beat-text .t-en{ display:inline; }
+  .lang-toggle{
+    position:fixed; top:24px; right:24px; z-index:50;
+    display:flex; gap:2px; background:rgba(20,18,15,0.75); backdrop-filter:blur(6px);
+    border:1px solid var(--line); border-radius:100px; padding:4px;
+  }
+  .lang-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.06em;
+    background:none; border:none; color:rgba(245,239,226,0.5); padding:6px 13px;
+    border-radius:100px; cursor:pointer; transition:all .2s ease;
+  }
+  .lang-btn.active{ background:var(--brass); color:var(--ink); }
+
+  /* ===== NAV / BLUEPRINT MARGIN ===== */
+  .frame{
+    position:fixed; inset:0; pointer-events:none; z-index:40;
+    border:1px solid var(--line);
+    margin:14px;
+  }
+  .frame::before, .frame::after{
+    content:''; position:absolute; width:9px; height:9px;
+    border:1px solid var(--brass);
+  }
+  .frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .frame::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+  header{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:64px 56px 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity:0.5;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 10%, transparent 75%);
+  }
+  .hero-top{ position:relative; display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap;}
+  .hero-name .eyebrow{ margin-bottom:8px; }
+  .hero-name h1{ font-size:1.35rem; font-weight:500; }
+  .hero-meta{ text-align:right; font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:rgba(245,239,226,0.55); line-height:1.9;}
+
+  .hero-main{ position:relative; max-width:920px; margin:auto 0; }
+  .hero-main .eyebrow{ margin-bottom:22px; }
+  .hero-main h2{
+    font-size:clamp(2.4rem, 6vw, 5rem);
+    line-height:1.03;
+    font-weight:600;
+  }
+  .hero-main h2 em{ font-style:italic; font-weight:500; color:var(--brass-soft); }
+  .hero-sub{
+    margin-top:28px; max-width:560px; font-size:1.05rem;
+    color:rgba(245,239,226,0.72);
+  }
+
+  .hero-bottom{
+    position:relative; display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; flex-wrap:wrap; padding-top:60px;
+  }
+  .pitch-index{ display:flex; gap:28px; flex-wrap:wrap; }
+  .pitch-index a{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; letter-spacing:0.05em;
+    color:rgba(245,239,226,0.55); text-decoration:none; display:flex; align-items:center; gap:8px;
+    transition:color .2s ease;
+  }
+  .pitch-index a:hover{ color:var(--brass-soft); }
+  .pitch-index a span{ color:var(--brass); }
+  .scroll-cue{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:rgba(245,239,226,0.4);
+    writing-mode:vertical-rl;
+  }
+
+  /* ===== PITCH SECTIONS ===== */
+  section.pitch{
+    position:relative;
+    padding:120px 56px;
+    border-top:1px solid var(--line);
+    overflow:hidden;
+  }
+  .pitch-inner{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns: 1fr 1fr; gap:80px; align-items:center;
+  }
+  section.pitch.reverse .pitch-inner{ direction:rtl; }
+  section.pitch.reverse .pitch-inner > *{ direction:ltr; }
+
+  .pitch-visual{
+    aspect-ratio: 4/5; border-radius:2px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    border:1px solid var(--line);
+  }
+  .pitch-visual svg{ width:78%; height:78%; }
+
+  .pitch-tag{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.1em;
+    text-transform:uppercase; padding:6px 12px; border:1px solid var(--line); border-radius:100px;
+    margin-bottom:26px; color:var(--paper);
+  }
+  .pitch-tag .dot{ width:6px; height:6px; border-radius:50%; }
+
+  .pitch-num{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--accent); margin-bottom:14px; display:block;}
+  .pitch-text h3{ font-size:clamp(1.9rem, 3.4vw, 2.7rem); line-height:1.08; margin-bottom:22px; }
+  .pitch-text p{ color:rgba(245,239,226,0.72); font-size:1rem; max-width:520px; margin-bottom:16px; }
+  .pitch-text p:last-of-type{ margin-bottom:0; }
+  .pitch-text strong{ color:var(--paper); font-weight:600; }
+
+  .beats{ margin-top:32px; display:flex; flex-direction:column; gap:14px; }
+  .beat{ display:flex; gap:14px; align-items:baseline; }
+  .beat-mark{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--accent); flex-shrink:0; width:56px; }
+  .beat-text{ font-size:0.92rem; color:rgba(245,239,226,0.68); }
+
+  .menu-chips{ margin-top:28px; display:flex; flex-wrap:wrap; gap:10px; }
+  .menu-chips span{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; padding:7px 12px;
+    border:1px dashed var(--line); border-radius:3px; color:rgba(245,239,226,0.7);
+  }
+
+  /* Section 1 — Restaurante Soul */
+  #soul{ --accent:#e3c766; background:linear-gradient(180deg, #14120f 0%, #171310 100%); }
+  #soul .pitch-visual{ background: linear-gradient(90deg, #1c1a17 50%, #0a0908 50%); }
+
+  /* Section 2 — Coco Ride */
+  #coco{ --accent:#ff8a3d; background:#120e0a; }
+  #coco .pitch-visual{ background: radial-gradient(ellipse at 50% 20%, #2a1a10 0%, #100a08 70%); }
+
+  /* Section 3 — Resort Villanos */
+  #villanos{ --accent:#8f5fd6; background:#0d0b12; }
+  #villanos .pitch-visual{ background: radial-gradient(ellipse at 50% 30%, #1c1224 0%, #0a070d 70%); }
+
+  /* Section 4 — Ride Moana */
+  #moana{ --accent:#3ecfb2; background:linear-gradient(180deg, #0a1412 0%, #0d1816 100%); }
+  #moana .pitch-visual{ background: radial-gradient(ellipse at 50% 70%, #102b26 0%, #081512 70%); }
+
+  /* Section 5 — Baby Shaolin */
+  #shaolin{ --accent:#e8542f; background:linear-gradient(180deg, #160e0a 0%, #190f0a 100%); }
+  #shaolin .pitch-visual{ background: radial-gradient(ellipse at 50% 30%, #2a160c 0%, #100a07 70%); }
+
+  @media (max-width: 880px){
+    .pitch-inner{ grid-template-columns:1fr; gap:44px; }
+    section.pitch.reverse .pitch-inner{ direction:ltr; }
+    .pitch-visual{ aspect-ratio:16/10; order:-1; }
+    header{ padding:40px 24px 28px; }
+    section.pitch{ padding:80px 24px; }
+    .hero-bottom{ flex-direction:column; align-items:flex-start; gap:28px; }
+    .lang-toggle{ top:16px; right:16px; }
+  }
+
+  footer{
+    padding:80px 56px 60px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; align-items:flex-end;
+  }
+  footer h3{ font-size:1.6rem; max-width:420px; }
+  footer .foot-meta{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:rgba(245,239,226,0.5); text-align:right; line-height:1.9; }
+
+  @media (max-width:640px){
+    footer{ padding:60px 24px 48px; flex-direction:column; align-items:flex-start; }
+    footer .foot-meta{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="frame"></div>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" data-lang="es" onclick="setLang('es')">ES</button>
+  <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+</div>
+
+<header>
+  <div class="hero-grid"></div>
+
+  <div class="hero-top">
+    <div class="hero-name">
+      <div class="eyebrow"><span class="t-es">Portafolio creativo</span><span class="t-en">Creative Portfolio</span></div>
+      <h1>Alexis Baez</h1>
+    </div>
+    <div class="hero-meta">
+      <span class="t-es">Presentado para</span><span class="t-en">Presented to</span><br>
+      THE WALT DISNEY COMPANY<br>
+      Buenos Aires, Argentina
+    </div>
+  </div>
+
+  <div class="hero-main">
+    <div class="eyebrow"><span class="t-es">Cinco conceptos creativos</span><span class="t-en">Five Creative Concepts</span></div>
+    <h2>
+      <span class="t-es">Ideas que nacen de<br><em>lo que ya amamos</em> — y una<br>que nace de mí.</span>
+      <span class="t-en">Ideas born from<br><em>what we already love</em> —<br>and one born from me.</span>
+    </h2>
+    <p class="hero-sub">
+      <span class="t-es">Un restaurante, dos atracciones y un resort inspirados en historias que ya conocemos, más una idea 100% original pensada para chicos.</span>
+      <span class="t-en">A restaurant, two rides and a resort inspired by stories we already know, plus one 100% original idea made for kids.</span>
+    </p>
+  </div>
+
+  <div class="hero-bottom">
+    <nav class="pitch-index">
+      <a href="#soul"><span>01</span> <span class="t-es">Restaurante Soul</span><span class="t-en">Soul Restaurant</span></a>
+      <a href="#coco"><span>02</span> Coco Ride</a>
+      <a href="#villanos"><span>03</span> <span class="t-es">Resort Disney Villanos</span><span class="t-en">Disney Villains Resort</span></a>
+      <a href="#moana"><span>04</span> <span class="t-es">Ride Moana</span><span class="t-en">Moana Ride</span></a>
+      <a href="#shaolin"><span>05</span> Baby Shaolin</a>
+    </nav>
+    <div class="scroll-cue"><span class="t-es">DESPLAZAR PARA VER LOS PITCHES ↓</span><span class="t-en">SCROLL TO SEE THE PITCHES ↓</span></div>
+  </div>
+</header>
+
+<!-- ============ 01 — RESTAURANTE SOUL ============ -->
+<section class="pitch" id="soul">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <svg viewBox="0 0 300 300" fill="none">
+        <line x1="150" y1="10" x2="150" y2="290" stroke="#3a352c" stroke-width="1" stroke-dasharray="2 6"/>
+        <g transform="translate(150,150)">
+          <g stroke="#e3c766" stroke-width="2" stroke-linecap="round">
+            <line x1="-120" y1="0" x2="-120" y2="0"/>
+            <line x1="-104" y1="-18" x2="-104" y2="18"/>
+            <line x1="-88" y1="-34" x2="-88" y2="34"/>
+            <line x1="-72" y1="-14" x2="-72" y2="14"/>
+            <line x1="-56" y1="-46" x2="-56" y2="46"/>
+            <line x1="-40" y1="-24" x2="-40" y2="24"/>
+            <line x1="-24" y1="-58" x2="-24" y2="58"/>
+            <line x1="-8" y1="-30" x2="-8" y2="30"/>
+          </g>
+          <g stroke="#6b6455" stroke-width="2" stroke-linecap="round">
+            <line x1="8" y1="-30" x2="8" y2="30"/>
+            <line x1="24" y1="-58" x2="24" y2="58"/>
+            <line x1="40" y1="-24" x2="40" y2="24"/>
+            <line x1="56" y1="-46" x2="56" y2="46"/>
+            <line x1="72" y1="-14" x2="72" y2="14"/>
+            <line x1="88" y1="-34" x2="88" y2="34"/>
+            <line x1="104" y1="-18" x2="104" y2="18"/>
+            <line x1="120" y1="0" x2="120" y2="0"/>
+          </g>
+          <circle cx="0" cy="0" r="3" fill="#f5efe2"/>
+        </g>
+        <text class="t-es" x="150" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#8a8272" letter-spacing="2">LUZ · SOMBRA</text>
+        <text class="t-en" x="150" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#8a8272" letter-spacing="2">LIGHT · SHADOW</text>
+      </svg>
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 01 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#e3c766"></span><span class="t-es">Restaurante temático — inspirado en Soul</span><span class="t-en">Themed restaurant — inspired by Soul</span></div>
+      <h3><span class="t-es">Restaurante Soul</span><span class="t-en">Soul Restaurant</span></h3>
+      <p>
+        <span class="t-es">Un mismo salón, dos mitades. De un lado, la luz: mesas rodeadas de recuerdos felices, música y color. Del otro, una penumbra cálida donde se honra a quienes ya no están. No es un contraste triste — es la idea central de <strong>Soul</strong> hecha espacio: la vida y el más allá, sentados a la misma mesa.</span>
+        <span class="t-en">One dining room, two halves. On one side, the light: tables surrounded by happy memories, music and color. On the other, a warm dimness where loved ones who are gone are honored. It's not a sad contrast — it's the central idea of <strong>Soul</strong> made physical: life and the afterlife, seated at the same table.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">RITUAL</div><div class="beat-mark t-en">RITUAL</div><div class="beat-text"><span class="t-es">Pizarrones en las paredes para dejar un mensaje a un hijo, hermano, pareja o padre — presente o ausente.</span><span class="t-en">Chalkboard walls where guests can leave a message to a child, sibling, partner or parent — present or gone.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">SONIDO</div><div class="beat-mark t-en">SOUND</div><div class="beat-text"><span class="t-es">Piano en vivo y jazz de fondo, en referencia directa a la banda sonora de la película.</span><span class="t-en">Live piano and background jazz, a direct nod to the film's soundtrack.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">DETALLE</div><div class="beat-mark t-en">DETAIL</div><div class="beat-text"><span class="t-es">Arte original de la película en las paredes, integrado al diseño del salón.</span><span class="t-en">Original film artwork on the walls, integrated into the dining room design.</span></div></div>
+      </div>
+      <div class="menu-chips">
+        <span>Burger Ever</span><span>Potatos Love</span><span>Pasta &amp; Meals Hugs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 — COCO RIDE ============ -->
+<section class="pitch reverse" id="coco">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <svg viewBox="0 0 300 300" fill="none">
+        <path d="M20 240 C 60 180, 90 260, 130 190 S 210 100, 260 60" stroke="#3a2a18" stroke-width="10" stroke-linecap="round"/>
+        <path d="M20 240 C 60 180, 90 260, 130 190 S 210 100, 260 60" stroke="#ff8a3d" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 13"/>
+        <circle cx="20" cy="240" r="5" fill="#f5efe2"/>
+        <circle cx="260" cy="60" r="5" fill="#f5efe2"/>
+        <g fill="#ffb347" opacity="0.85">
+          <circle cx="70" cy="70" r="2"/><circle cx="110" cy="40" r="1.6"/><circle cx="200" cy="200" r="2"/>
+          <circle cx="230" cy="150" r="1.6"/><circle cx="150" cy="80" r="1.8"/><circle cx="40" cy="120" r="1.4"/>
+        </g>
+        <text class="t-es" x="150" y="285" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#8a6a4a" letter-spacing="2">EPCOT · PABELLÓN DE MÉXICO</text>
+        <text class="t-en" x="150" y="285" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#8a6a4a" letter-spacing="2">EPCOT · MEXICO PAVILION</text>
+      </svg>
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 02 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#ff8a3d"></span><span class="t-es">Montaña rusa — inspirada en Coco · Epcot, pabellón de México</span><span class="t-en">Roller coaster — inspired by Coco · Epcot, Mexico Pavilion</span></div>
+      <h3>Coco Ride</h3>
+      <p>
+        <span class="t-es">La atracción empieza tranquila, entre las paredes iluminadas del mundo de Miguel y su sueño con la música. Sin aviso, el ride cruza al mundo de los muertos y el ritmo cambia: Ernesto de la Cruz persigue, y Pepita y los alebrijes aparecen para guiar y proteger el regreso a casa.</span>
+        <span class="t-en">The ride starts calm, among the illuminated walls of Miguel's world and his dream of music. Without warning, it crosses into the Land of the Dead and the pace shifts: Ernesto de la Cruz gives chase, and Pepita and the alebrijes appear to guide and protect the way back home.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">ACTO I</div><div class="beat-mark t-en">ACT I</div><div class="beat-text"><span class="t-es">Mundo humano — la historia de Miguel, ritmo tranquilo, luz cálida.</span><span class="t-en">Human world — Miguel's story, calm pace, warm light.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ACTO II</div><div class="beat-mark t-en">ACT II</div><div class="beat-text"><span class="t-es">Transición al mundo de los muertos — el ride acelera, persecución de Ernesto de la Cruz.</span><span class="t-en">Transition to the Land of the Dead — the ride accelerates, Ernesto de la Cruz gives chase.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ACTO III</div><div class="beat-mark t-en">ACT III</div><div class="beat-text"><span class="t-es">Alebrijes y Pepita guían el regreso; cierre con "Un Poco Loco" y la familia de Miguel viéndolo convertirse en músico.</span><span class="t-en">Alebrijes and Pepita guide the return; closes with "Un Poco Loco" and Miguel's family watching him become a musician.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 — RESORT VILLANOS ============ -->
+<section class="pitch" id="villanos">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <svg viewBox="0 0 300 300" fill="none">
+        <rect x="40" y="30" width="220" height="240" stroke="#3d2c55" stroke-width="1.5"/>
+        <path d="M40 90 H260 M40 150 H260 M40 210 H260" stroke="#2a1d3d" stroke-width="1"/>
+        <path d="M150 30 V270 M40 150 H260" stroke="#2a1d3d" stroke-width="1"/>
+        <circle cx="150" cy="150" r="46" stroke="#8f5fd6" stroke-width="1.4"/>
+        <path d="M150 104 A46 46 0 0 1 150 196 A34 34 0 0 0 150 104 Z" fill="#8f5fd6" opacity="0.85"/>
+        <g stroke="#5c3f8a" stroke-width="1.2" opacity="0.7">
+          <path d="M70 60 q10 20 -4 34"/><path d="M230 240 q-10 -20 4 -34"/>
+        </g>
+        <text class="t-es" x="150" y="285" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#7a6a9a" letter-spacing="2">4 ALAS TEMÁTICAS</text>
+        <text class="t-en" x="150" y="285" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#7a6a9a" letter-spacing="2">4 THEMED WINGS</text>
+      </svg>
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 03 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#8f5fd6"></span><span class="t-es">Resort temático — villanos de Disney</span><span class="t-en">Themed resort — Disney villains</span></div>
+      <h3><span class="t-es">Resort Disney Villanos</span><span class="t-en">Disney Villains Resort</span></h3>
+      <p>
+        <span class="t-es">Un resort dividido en cuatro alas, cada una construida desde la estética de un villano icónico — no como decoración, sino como inmersión total, desde la habitación hasta el pasillo.</span>
+        <span class="t-en">A resort divided into four wings, each built from the aesthetic of an iconic villain — not as decoration, but as total immersion, from the hallway to the room itself.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">ALA I</div><div class="beat-mark t-en">WING I</div><div class="beat-text"><span class="t-es">Maléfica — habitaciones temáticas dentro de su tierra.</span><span class="t-en">Maleficent — themed rooms within her realm.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ALA II</div><div class="beat-mark t-en">WING II</div><div class="beat-text"><span class="t-es">Úrsula (La Sirenita) — su reino sumergido como segunda zona.</span><span class="t-en">Ursula (The Little Mermaid) — her sunken kingdom as the second zone.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ALA III</div><div class="beat-mark t-en">WING III</div><div class="beat-text"><span class="t-es">Scar — figuras de Scar y Mufasa en la escena de la cornisa, y las hienas presentes en el recorrido.</span><span class="t-en">Scar — figures of Scar and Mufasa in the cliff-edge scene, with hyenas present throughout.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ALA IV</div><div class="beat-mark t-en">WING IV</div><div class="beat-text"><span class="t-es">Cruella de Vil — perros enjaulados, motivos de sus tapados de piel y habitaciones con su estilo de vestir.</span><span class="t-en">Cruella de Vil — caged dogs, fur-coat motifs and rooms styled after her signature look.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 — RIDE MOANA ============ -->
+<section class="pitch reverse" id="moana">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <svg viewBox="0 0 300 300" fill="none">
+        <path d="M20 180 Q 70 160 120 180 T 220 180 T 300 175" stroke="#1a4d42" stroke-width="1.4"/>
+        <path d="M0 210 Q 60 185 120 210 T 240 208 T 300 205" stroke="#3ecfb2" stroke-width="2" opacity="0.7"/>
+        <path d="M0 240 Q 60 220 120 240 T 240 238 T 300 235" stroke="#1a4d42" stroke-width="1.4"/>
+        <path d="M110 168 Q150 150 190 168 L182 186 H118 Z" fill="#e8a06a"/>
+        <line x1="150" y1="150" x2="150" y2="112" stroke="#e8a06a" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M150 112 L184 130 L150 140 Z" fill="#3ecfb2" opacity="0.9"/>
+        <g transform="translate(150,90)" stroke="#f5efe2" stroke-width="1.4" opacity="0.85">
+          <circle cx="-9" cy="0" r="7"/>
+          <circle cx="9" cy="0" r="7"/>
+          <line x1="-2" y1="0" x2="2" y2="0"/>
+        </g>
+        <text class="t-es" x="150" y="280" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a8c7c" letter-spacing="2">SIMULADOR · AGUA · VIENTO</text>
+        <text class="t-en" x="150" y="280" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#4a8c7c" letter-spacing="2">SIMULATOR · WATER · WIND</text>
+      </svg>
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 04 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#3ecfb2"></span><span class="t-es">Atracción simulador — inspirada en Moana</span><span class="t-en">Simulator ride — inspired by Moana</span></div>
+      <h3><span class="t-es">Ride Moana</span><span class="t-en">Moana Ride</span></h3>
+      <p>
+        <span class="t-es">El bote es el asiento. Los lentes son la puerta de entrada. Desde el primer segundo, el cuerpo cree que está en el océano: el viento cruza la cara, el aire huele a mar, y las olas empujan con fuerza real mientras la aventura recorre los momentos más importantes de la película.</span>
+        <span class="t-en">The boat is the seat. The goggles are the doorway in. From the first second, the body believes it's at sea: wind crosses your face, the air smells like ocean, and the waves push with real force as the adventure moves through the film's most important moments.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">FILA</div><div class="beat-mark t-en">QUEUE</div><div class="beat-text"><span class="t-es">Paredes pintadas con olas que se iluminan en la oscuridad, junto a murales de los ancestros de Moana y de los personajes centrales de la película, convirtiendo la espera en la primera parte del recorrido.</span><span class="t-en">Wave murals painted on the walls that glow in the dark, alongside murals of Moana's ancestors and the film's central characters, turning the wait itself into the first part of the ride.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ASIENTO</div><div class="beat-mark t-en">SEAT</div><div class="beat-text"><span class="t-es">El bote funciona como asiento físico, sincronizado con el movimiento del simulador.</span><span class="t-en">The boat works as a physical seat, synced with the simulator's motion.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">INMERSIÓN</div><div class="beat-mark t-en">IMMERSION</div><div class="beat-text"><span class="t-es">Lentes que sumergen al visitante dentro del juego/película desde el arranque del recorrido.</span><span class="t-en">Goggles that immerse the guest inside the game/film from the moment the ride begins.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">SENSORIAL</div><div class="beat-mark t-en">SENSORY</div><div class="beat-text"><span class="t-es">Olor a mar, viento oceánico y el poder de las olas como parte física de la experiencia, no solo visual.</span><span class="t-en">Sea air, ocean wind and the power of the waves as a physical part of the experience, not just a visual one.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ARCO</div><div class="beat-mark t-en">ARC</div><div class="beat-text"><span class="t-es">Recorre los momentos más importantes de la película, de principio a fin, con acción y emoción en cada tramo.</span><span class="t-en">Moves through the film's most important moments, start to finish, with action and emotion at every turn.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 — BABY SHAOLIN ============ -->
+<section class="pitch" id="shaolin">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <svg viewBox="0 0 300 300" fill="none">
+        <path d="M60 200 L150 150 L240 200 Z" fill="#3a1c10"/>
+        <rect x="80" y="200" width="140" height="70" fill="#2a140b"/>
+        <rect x="70" y="196" width="160" height="8" fill="#e8542f"/>
+        <g transform="translate(150,120)">
+          <circle r="30" stroke="#f0b93a" stroke-width="1.2" opacity="0.5"/>
+          <path d="M-7 -22 h14 v10 l6 8 v26 a6 6 0 0 1 -6 6 h-14 a6 6 0 0 1 -6 -6 v-26 l6 -8 Z" fill="#f0b93a"/>
+          <circle cx="0" cy="-24" r="4" fill="#f0b93a"/>
+        </g>
+        <g stroke="#e8542f" stroke-width="1.4" opacity="0.8">
+          <path d="M70 250 l14 -10"/>
+          <path d="M230 250 l-14 -10"/>
+        </g>
+        <text class="t-es" x="150" y="288" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#a86a45" letter-spacing="2">ALDEA BUM BUM</text>
+        <text class="t-en" x="150" y="288" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#a86a45" letter-spacing="2">BUM BUM VILLAGE</text>
+      </svg>
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 05 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#e8542f"></span><span class="t-es">Serie animada — propiedad original</span><span class="t-en">Animated series — original property</span></div>
+      <h3>Baby Shaolin</h3>
+      <p>
+        <span class="t-es">En la aldea de <strong>Bum Bum</strong> vive Baby Shaolin junto a su padre y su madre, guardianes del templo. Una mañana, un discípulo de su padre roba el <strong>biberón dorado</strong> — el artefacto que mantiene el equilibrio y la paz del pueblo — y el caos se apodera de todo. Nuestro pequeño guerrero deberá cruzar hacia el mundo oscuro para recuperarlo y devolverle la calma a su hogar.</span>
+        <span class="t-en">In the village of <strong>Bum Bum</strong> lives Baby Shaolin, alongside his father and mother, guardians of the temple. One morning, one of his father's disciples steals the <strong>golden bottle</strong> — the artifact that keeps the village in balance and peace — and chaos takes over. Our tiny warrior must cross into the dark world to get it back and bring calm home again.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">MUNDO</div><div class="beat-mark t-en">WORLD</div><div class="beat-text"><span class="t-es">La aldea Bum Bum, un templo shaolin en miniatura y un "mundo oscuro" como territorio de la aventura.</span><span class="t-en">The village of Bum Bum, a miniature shaolin temple, and a "dark world" as the territory of the adventure.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">CONFLICTO</div><div class="beat-mark t-en">CONFLICT</div><div class="beat-text"><span class="t-es">El robo del biberón dorado por un discípulo de su propio padre — traición cercana, no un villano lejano.</span><span class="t-en">The golden bottle stolen by one of his own father's disciples — betrayal close to home, not a distant villain.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">HÉROE</div><div class="beat-mark t-en">HERO</div><div class="beat-text"><span class="t-es">Un bebé guerrero shaolin: la mezcla de ternura infantil y espíritu de artes marciales como identidad visual central.</span><span class="t-en">A baby shaolin warrior: the mix of childlike sweetness and martial-arts spirit as the core visual identity.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">PARA CHICOS</div><div class="beat-mark t-en">FOR KIDS</div><div class="beat-text"><span class="t-es">Aventura, humor visual y un objeto cotidiano (el biberón) elevado a artefacto legendario — fácil de entender y de querer.</span><span class="t-en">Adventure, visual humor and an everyday object (the baby bottle) elevated to legendary artifact — easy to understand and easy to love.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h3><span class="t-es">Gracias por leer estos cinco pitches.</span><span class="t-en">Thanks for reading these five pitches.</span></h3>
+  <div class="foot-meta">
+    ALEXIS BAEZ<br>
+    <span class="t-es">Portafolio creativo — 2026</span><span class="t-en">Creative Portfolio — 2026</span>
+  </div>
+</footer>
+
+<script>
+  function setLang(lang){
+    document.documentElement.classList.toggle('en', lang === 'en');
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+  }
+</script>
+
+</body>
+</html>
