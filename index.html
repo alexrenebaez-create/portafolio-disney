@@ -220,6 +220,115 @@
   #shaolin{ --accent:#e8542f; background:linear-gradient(180deg, #160e0a 0%, #190f0a 100%); }
   #shaolin .pitch-visual{ background: radial-gradient(ellipse at 50% 30%, #2a160c 0%, #100a07 70%); }
 
+
+  /* ===== INTERACCIÓN DE PITCHES ===== */
+  section.pitch{
+    cursor: default;
+    transition: background .45s ease, transform .35s ease;
+  }
+
+  .pitch-inner{
+    transition: transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .pitch-visual{
+    overflow:hidden;
+    cursor:pointer;
+    box-shadow:0 0 0 1px rgba(255,255,255,.02);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1),
+               box-shadow .45s ease, border-color .45s ease;
+  }
+
+  .pitch-visual::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%),
+               rgba(255,255,255,.18), transparent 32%);
+    opacity:0;
+    transition:opacity .3s ease;
+    pointer-events:none;
+  }
+
+  .pitch-visual img{
+    transition:transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;
+  }
+
+  .pitch:hover .pitch-visual{
+    transform:translateY(-6px) scale(1.012);
+    border-color:color-mix(in srgb, var(--accent) 65%, transparent);
+    box-shadow:0 18px 55px rgba(0,0,0,.32), 0 0 35px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+
+  .pitch:hover .pitch-visual::after{ opacity:1; }
+  .pitch:hover .pitch-visual img{ transform:scale(1.045); filter:saturate(1.08) contrast(1.03); }
+
+  .pitch-text > *{
+    opacity:.82;
+    transform:translateY(5px);
+    transition:opacity .35s ease, transform .35s ease;
+  }
+
+  .pitch:hover .pitch-text > *{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .beat{
+    position:relative;
+    padding:10px 12px;
+    margin-left:-12px;
+    border-left:2px solid transparent;
+    border-radius:3px;
+    cursor:pointer;
+    transition:background .25s ease, border-color .25s ease, transform .25s ease;
+  }
+
+  .beat:hover, .beat.active{
+    background:rgba(255,255,255,.035);
+    border-left-color:var(--accent);
+    transform:translateX(6px);
+  }
+
+  .menu-chips span{
+    cursor:pointer;
+    transition:transform .2s ease, border-color .2s ease, color .2s ease, background .2s ease;
+  }
+
+  .menu-chips span:hover{
+    transform:translateY(-3px);
+    border-color:var(--accent);
+    color:var(--paper);
+    background:rgba(255,255,255,.035);
+  }
+
+  .pitch.is-focused .pitch-visual{
+    animation:pitchGlow 1.2s ease;
+  }
+
+  @keyframes pitchGlow{
+    0%{ box-shadow:0 0 0 rgba(255,255,255,0); }
+    45%{ box-shadow:0 0 45px color-mix(in srgb, var(--accent) 35%, transparent); }
+    100%{ box-shadow:0 0 0 rgba(255,255,255,0); }
+  }
+
+  .pitch-hint{
+    margin-top:24px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.66rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:rgba(245,239,226,.42);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      scroll-behavior:auto !important;
+      animation:none !important;
+      transition:none !important;
+    }
+  }
+
   @media (max-width: 880px){
     .pitch-inner{ grid-template-columns:1fr; gap:44px; }
     section.pitch.reverse .pitch-inner{ direction:ltr; }
@@ -249,11 +358,9 @@
 <canvas id="disney-dust"></canvas>
 <div class="frame"></div>
 
-<!-- Pista de Audio Fantasía Orquestal (Cascanueces / Danza de las Hadas - Tchaikovsky) -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tchaikovsky_-_Nutcracker_Suite_-_07_Dance_of_the_Sugar_Plum_Fairy.ogg" type="audio/ogg">
-  <source src="https://ia800902.us.archive.org/27/items/TchaikovskyNutcrackerSuite/07%20Dance%20of%20the%20Sugar%20Plum%20Fairy.mp3" type="audio/mpeg">
-</audio>
+<!-- Música original generada con Web Audio API: fantasía orquestal ambiental.
+     No requiere archivos externos ni incorpora música de Disney. -->
+<audio id="bgMusic" loop preload="auto"></audio>
 
 <div class="top-controls">
   <button class="audio-toggle" id="audioBtn" onclick="toggleDisneyAudio()">
@@ -336,7 +443,8 @@
         <span>Burger Ever</span><span>Potatos Love</span><span>Pasta &amp; Meals Hugs</span>
       </div>
     </div>
-  </div>
+        <div class="pitch-hint"><span class="t-es">Haz clic en una escena o detalle para explorar el pitch · el sonido responde a tu interacción</span><span class="t-en">Click a scene or detail to explore the pitch · sound responds to your interaction</span></div>
+</div>
 </section>
 
 <!-- ============ 02 — COCO RIDE ============ -->
@@ -359,7 +467,8 @@
         <div class="beat"><div class="beat-mark t-es">ACTO III</div><div class="beat-mark t-en">ACT III</div><div class="beat-text"><span class="t-es">Alebrijes y Pepita guían el regreso; cierre con "Un Poco Loco" y la familia de Miguel viéndolo convertirse en músico.</span><span class="t-en">Alebrijes and Pepita guide the return; closes with "Un Poco Loco" and Miguel's family watching him become a musician.</span></div></div>
       </div>
     </div>
-  </div>
+        <div class="pitch-hint"><span class="t-es">Haz clic en una escena o detalle para explorar el pitch · el sonido responde a tu interacción</span><span class="t-en">Click a scene or detail to explore the pitch · sound responds to your interaction</span></div>
+</div>
 </section>
 
 <!-- ============ 03 — RESORT VILLANOS ============ -->
@@ -383,7 +492,8 @@
         <div class="beat"><div class="beat-mark t-es">ALA IV</div><div class="beat-mark t-en">WING IV</div><div class="beat-text"><span class="t-es">Cruella de Vil — perros enjaulados, motivos de sus tapados de piel y habitaciones con su estilo de vestir.</span><span class="t-en">Cruella de Vil — caged dogs, fur-coat motifs and rooms styled after her signature look.</span></div></div>
       </div>
     </div>
-  </div>
+        <div class="pitch-hint"><span class="t-es">Haz clic en una escena o detalle para explorar el pitch · el sonido responde a tu interacción</span><span class="t-en">Click a scene or detail to explore the pitch · sound responds to your interaction</span></div>
+</div>
 </section>
 
 <!-- ============ 04 — RIDE MOANA ============ -->
@@ -408,7 +518,8 @@
         <div class="beat"><div class="beat-mark t-es">ARCO</div><div class="beat-mark t-en">ARC</div><div class="beat-text"><span class="t-es">Recorre los momentos más importantes de la película, de principio a fin, con acción y emoción en cada tramo.</span><span class="t-en">Moves through the film's most important moments, start to finish, with action and emotion at every turn.</span></div></div>
       </div>
     </div>
-  </div>
+        <div class="pitch-hint"><span class="t-es">Haz clic en una escena o detalle para explorar el pitch · el sonido responde a tu interacción</span><span class="t-en">Click a scene or detail to explore the pitch · sound responds to your interaction</span></div>
+</div>
 </section>
 
 <!-- ============ 05 — BABY SHAOLIN ============ -->
@@ -432,7 +543,8 @@
         <div class="beat"><div class="beat-mark t-es">PARA CHICOS</div><div class="beat-mark t-en">FOR KIDS</div><div class="beat-text"><span class="t-es">Aventura, humor visual y un objeto cotidiano (el biberón) elevado a artefacto legendario — fácil de entender y de querer.</span><span class="t-en">Adventure, visual humor and an everyday object (the baby bottle) elevated to legendary artifact — easy to understand and easy to love.</span></div></div>
       </div>
     </div>
-  </div>
+        <div class="pitch-hint"><span class="t-es">Haz clic en una escena o detalle para explorar el pitch · el sonido responde a tu interacción</span><span class="t-en">Click a scene or detail to explore the pitch · sound responds to your interaction</span></div>
+</div>
 </section>
 
 <footer>
@@ -452,27 +564,256 @@
     });
   }
 
-  /* Control de Audio */
+  /* ===== AUDIO AMBIENTAL ORIGINAL =====
+     Genera una textura de fantasía cinematográfica con Web Audio API.
+     El navegador bloquea autoplay con sonido, por eso comienza tras el primer clic.
+  */
   const audio = document.getElementById('bgMusic');
   const audioBtn = document.getElementById('audioBtn');
   const audioIcon = document.getElementById('audioIcon');
 
-  function toggleDisneyAudio() {
-    if (audio.paused) {
-      audio.play().then(() => {
-        audioBtn.classList.add('playing');
-        audioIcon.className = 'fa-solid fa-volume-high';
-      }).catch(err => {
-        console.log("Audio play error:", err);
-      });
-    } else {
-      audio.pause();
-      audioBtn.classList.remove('playing');
-      audioIcon.className = 'fa-solid fa-music';
+  let audioCtx = null;
+  let masterGain = null;
+  let ambienceStarted = false;
+  let ambienceTimer = null;
+  let activeOscillators = [];
+  let audioEnabled = false;
+
+  const pitchThemes = {
+    soul:    { notes:[261.63,329.63,392.00,493.88], tempo:170 },
+    coco:    { notes:[293.66,349.23,440.00,523.25], tempo:145 },
+    villanos:{ notes:[220.00,277.18,329.63,415.30], tempo:220 },
+    moana:   { notes:[261.63,329.63,392.00,587.33], tempo:155 },
+    shaolin: { notes:[293.66,369.99,440.00,554.37], tempo:135 }
+  };
+
+  function ensureAudio(){
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.0001;
+    masterGain.connect(audioCtx.destination);
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 3600;
+    filter.Q.value = 0.6;
+    filter.connect(masterGain);
+
+    // Drones suaves y originales: pads + campanillas sintéticas.
+    const padNotes = [130.81, 164.81, 196.00];
+    padNotes.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = i === 1 ? 'triangle' : 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0.035;
+      osc.connect(gain).connect(filter);
+      osc.start();
+      activeOscillators.push(osc);
+    });
+  }
+
+  function startAmbience(){
+    ensureAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (ambienceStarted) return;
+
+    ambienceStarted = true;
+    audioEnabled = true;
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.exponentialRampToValueAtTime(0.085, audioCtx.currentTime + 1.4);
+
+    const playBell = () => {
+      if (!audioEnabled || !audioCtx) return;
+      const section = document.querySelector('section.pitch:hover') || document.querySelector('section.pitch');
+      const key = section ? section.id : 'soul';
+      const theme = pitchThemes[key] || pitchThemes.soul;
+      const freq = theme.notes[Math.floor(Math.random() * theme.notes.length)];
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const delay = audioCtx.createDelay(1.5);
+      const feedback = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.002, audioCtx.currentTime + .9);
+
+      gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.055, audioCtx.currentTime + .035);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
+
+      delay.delayTime.value = .32;
+      feedback.gain.value = .24;
+
+      osc.connect(gain).connect(delay).connect(feedback).connect(delay);
+      delay.connect(masterGain);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 1.9);
+
+      ambienceTimer = setTimeout(playBell, 850 + Math.random() * 900);
+    };
+
+    playBell();
+    audioBtn.classList.add('playing');
+    audioIcon.className = 'fa-solid fa-volume-high';
+  }
+
+  function stopAmbience(){
+    audioEnabled = false;
+    ambienceStarted = false;
+    clearTimeout(ambienceTimer);
+    if (audioCtx && masterGain){
+      masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      masterGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + .5);
+    }
+    audioBtn.classList.remove('playing');
+    audioIcon.className = 'fa-solid fa-music';
+  }
+
+  function toggleDisneyAudio(){
+    if (!audioEnabled) startAmbience();
+    else stopAmbience();
+  }
+
+  function playPitchAccent(id){
+    ensureAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const theme = pitchThemes[id] || pitchThemes.soul;
+    const now = audioCtx.currentTime;
+
+    // Pequeño arpegio de "revelación" al entrar/interactuar con un pitch.
+    theme.notes.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+
+      gain.gain.setValueAtTime(0.0001, now + i * .07);
+      gain.gain.exponentialRampToValueAtTime(.065, now + i * .07 + .025);
+      gain.gain.exponentialRampToValueAtTime(.0001, now + i * .07 + .75);
+
+      osc.connect(gain).connect(masterGain);
+      osc.start(now + i * .07);
+      osc.stop(now + i * .07 + .8);
+    });
+
+    if (!audioEnabled) {
+      audioEnabled = true;
+      ambienceStarted = true;
+      masterGain.gain.setValueAtTime(.0001, now);
+      masterGain.gain.exponentialRampToValueAtTime(.055, now + .45);
+      clearTimeout(ambienceTimer);
+      const resume = () => {
+        if (audioEnabled) {
+          ambienceStarted = false;
+          startAmbience();
+        }
+      };
+      setTimeout(resume, 900);
+      audioBtn.classList.add('playing');
+      audioIcon.className = 'fa-solid fa-volume-high';
     }
   }
 
-  /* Canvas: Polvo de Hadas y Hidden Mickeys Flotantes */
+  /* ===== INTERACCIÓN DE PITCHES ===== */
+  const pitches = document.querySelectorAll('section.pitch');
+
+  pitches.forEach((pitch) => {
+    const id = pitch.id;
+    const visual = pitch.querySelector('.pitch-visual');
+
+    pitch.addEventListener('pointermove', (e) => {
+      const rect = visual.getBoundingClientRect();
+      visual.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+      visual.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+
+      if (window.innerWidth > 880) {
+        const x = (e.clientX - rect.left) / rect.width - .5;
+        const y = (e.clientY - rect.top) / rect.height - .5;
+        visual.style.transform = `translate(${x * 8}px, ${y * 8}px) scale(1.012)`;
+      }
+    });
+
+    pitch.addEventListener('pointerleave', () => {
+      visual.style.transform = '';
+    });
+
+    visual.addEventListener('click', () => {
+      pitch.classList.remove('is-focused');
+      void pitch.offsetWidth;
+      pitch.classList.add('is-focused');
+      playPitchAccent(id);
+
+      // Lleva el foco al contenido para que cada pitch "se sienta" interactivo.
+      pitch.querySelector('.pitch-text h3')?.focus?.();
+    });
+
+    // Cada beat se puede explorar individualmente.
+    pitch.querySelectorAll('.beat').forEach((beat) => {
+      beat.setAttribute('tabindex', '0');
+
+      const activateBeat = () => {
+        pitch.querySelectorAll('.beat').forEach(b => b.classList.remove('active'));
+        beat.classList.add('active');
+        playPitchAccent(id);
+      };
+
+      beat.addEventListener('click', activateBeat);
+      beat.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activateBeat();
+        }
+      });
+    });
+
+    // Los chips de menú/atributos también responden.
+    pitch.querySelectorAll('.menu-chips span').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chip.animate(
+          [
+            { transform:'scale(1)' },
+            { transform:'scale(1.08)' },
+            { transform:'scale(1)' }
+          ],
+          { duration:320, easing:'ease-out' }
+        );
+        playPitchAccent(id);
+      });
+    });
+  });
+
+  /* Activación automática al llegar a cada pitch mediante scroll,
+     sin reproducir sonido hasta que el usuario haya interactuado. */
+  const pitchObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > .45) {
+        entry.target.classList.add('is-focused');
+        if (audioEnabled) playPitchAccent(entry.target.id);
+      }
+    });
+  }, { threshold:[.45] });
+
+  pitches.forEach(p => pitchObserver.observe(p));
+
+  /* Navegación superior: pequeño efecto sonoro al saltar entre pitches. */
+  document.querySelectorAll('.pitch-index a').forEach(link => {
+    link.addEventListener('click', () => {
+      const id = link.getAttribute('href').replace('#','');
+      setTimeout(() => playPitchAccent(id), 350);
+    });
+  });
+
+  /* Primer gesto: desbloquea Web Audio en navegadores que bloquean autoplay. */
+  document.addEventListener('pointerdown', () => {
+    if (!audioCtx) ensureAudio();
+  }, { once:true });
+
+  /* ===== Canvas: Polvo de Hadas y Hidden Mickeys Flotantes ===== */
   const canvas = document.getElementById('disney-dust');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -481,24 +822,24 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
+
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
   class Particle {
-    constructor() {
-      this.reset();
-    }
+    constructor() { this.reset(); }
+
     reset() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
       this.size = Math.random() * 1.8 + 0.4;
       this.speedY = -Math.random() * 0.4 - 0.1;
       this.opacity = Math.random() * 0.5 + 0.15;
-      // 20% de probabilidad de ser un "Hidden Mickey"
       this.isMickey = Math.random() < 0.20;
       this.rotation = Math.random() * Math.PI * 2;
       this.rotSpeed = (Math.random() - 0.5) * 0.02;
     }
+
     update() {
       this.y += this.speedY;
       this.rotation += this.rotSpeed;
@@ -507,6 +848,7 @@
         this.y = canvas.height + 10;
       }
     }
+
     draw() {
       ctx.save();
       ctx.translate(this.x, this.y);
@@ -514,22 +856,11 @@
       ctx.fillStyle = `rgba(227, 199, 102, ${this.opacity})`;
 
       if (this.isMickey) {
-        // Dibujar silueta Mickey escondido
         const r = this.size * 1.5;
-        // Cabeza
-        ctx.beginPath();
-        ctx.arc(0, 0, r, 0, Math.PI * 2);
-        ctx.fill();
-        // Oreja izquierda
-        ctx.beginPath();
-        ctx.arc(-r * 0.9, -r * 0.9, r * 0.58, 0, Math.PI * 2);
-        ctx.fill();
-        // Oreja derecha
-        ctx.beginPath();
-        ctx.arc(r * 0.9, -r * 0.9, r * 0.58, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(-r * .9, -r * .9, r * .58, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(r * .9, -r * .9, r * .58, 0, Math.PI * 2); ctx.fill();
       } else {
-        // Partícula dorada simple
         ctx.beginPath();
         ctx.arc(0, 0, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -538,13 +869,16 @@
     }
   }
 
-  for (let i = 0; i < 40; i++) { particles.push(new Particle()); }
+  for (let i = 0; i < 40; i++) particles.push(new Particle());
+
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => { p.update(); p.draw(); });
     requestAnimationFrame(animate);
   }
+
   animate();
+
 </script>
 
 </body>
