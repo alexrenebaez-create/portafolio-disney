@@ -32,7 +32,7 @@
   #disney-dust {
     position: fixed; inset: 0;
     pointer-events: none; z-index: 1;
-    opacity: 0.6;
+    opacity: 0.65;
   }
 
   h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; }
@@ -58,12 +58,12 @@
   .audio-toggle {
     display:flex; align-items:center; gap:8px;
     background:rgba(20,18,15,0.85); backdrop-filter:blur(8px);
-    border:1px solid var(--line); border-radius:100px; padding:4px 12px;
+    border:1px solid var(--line); border-radius:100px; padding:6px 14px;
     font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.06em;
-    color:rgba(245,239,226,0.7); cursor:pointer; transition:all .2s ease;
+    color:rgba(245,239,226,0.8); cursor:pointer; transition:all .2s ease;
   }
   .audio-toggle:hover, .audio-toggle.playing {
-    border-color:var(--brass); color:var(--brass-soft);
+    border-color:var(--brass); color:var(--brass-soft); box-shadow: 0 0 12px rgba(201,162,39,0.2);
   }
 
   .lang-toggle{
@@ -89,6 +89,17 @@
   }
   .frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
   .frame::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+  /* HIDDEN MICKEY WATERMARK IN CORNER */
+  .hidden-mickey-watermark {
+    position: absolute;
+    bottom: 24px;
+    right: 28px;
+    opacity: 0.12;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .hidden-mickey-watermark:hover { opacity: 0.4; }
 
   header{
     min-height:100vh;
@@ -222,6 +233,7 @@
   footer{
     padding:80px 56px 60px; border-top:1px solid var(--line);
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; align-items:flex-end;
+    position:relative;
   }
   footer h3{ font-size:1.6rem; max-width:420px; }
   footer .foot-meta{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:rgba(245,239,226,0.5); text-align:right; line-height:1.9; }
@@ -237,16 +249,17 @@
 <canvas id="disney-dust"></canvas>
 <div class="frame"></div>
 
-<!-- Pista de Audio Orquestal de Fondo -->
+<!-- Pista de Audio Fantasía Orquestal (Cascanueces / Danza de las Hadas - Tchaikovsky) -->
 <audio id="bgMusic" loop preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a88137.mp3?filename=fairytale-orchestral-fantasy-109038.mp3" type="audio/mpeg">
+  <source src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tchaikovsky_-_Nutcracker_Suite_-_07_Dance_of_the_Sugar_Plum_Fairy.ogg" type="audio/ogg">
+  <source src="https://ia800902.us.archive.org/27/items/TchaikovskyNutcrackerSuite/07%20Dance%20of%20the%20Sugar%20Plum%20Fairy.mp3" type="audio/mpeg">
 </audio>
 
 <div class="top-controls">
   <button class="audio-toggle" id="audioBtn" onclick="toggleDisneyAudio()">
     <i class="fa-solid fa-music" id="audioIcon"></i>
-    <span class="t-es" id="audioTextEs">Música</span>
-    <span class="t-en" id="audioTextEn">Audio</span>
+    <span class="t-es" id="audioTextEs">Música Ambient</span>
+    <span class="t-en" id="audioTextEn">Ambient Sound</span>
   </button>
   <div class="lang-toggle">
     <button class="lang-btn active" data-lang="es" onclick="setLang('es')">ES</button>
@@ -256,6 +269,13 @@
 
 <header>
   <div class="hero-grid"></div>
+
+  <!-- Hidden Mickey Blueprint en el Hero -->
+  <svg class="hidden-mickey-watermark" width="60" height="50" viewBox="0 0 100 85" fill="none" stroke="var(--brass)" stroke-width="1.5">
+    <circle cx="50" cy="55" r="28" stroke-dasharray="3 3"/>
+    <circle cx="24" cy="24" r="16" stroke-dasharray="3 3"/>
+    <circle cx="76" cy="24" r="16" stroke-dasharray="3 3"/>
+  </svg>
 
   <div class="hero-top">
     <div class="hero-name">
@@ -432,16 +452,19 @@
     });
   }
 
-  /* Control de Audio de Disney */
+  /* Control de Audio */
   const audio = document.getElementById('bgMusic');
   const audioBtn = document.getElementById('audioBtn');
   const audioIcon = document.getElementById('audioIcon');
 
   function toggleDisneyAudio() {
     if (audio.paused) {
-      audio.play();
-      audioBtn.classList.add('playing');
-      audioIcon.className = 'fa-solid fa-volume-high';
+      audio.play().then(() => {
+        audioBtn.classList.add('playing');
+        audioIcon.className = 'fa-solid fa-volume-high';
+      }).catch(err => {
+        console.log("Audio play error:", err);
+      });
     } else {
       audio.pause();
       audioBtn.classList.remove('playing');
@@ -449,7 +472,7 @@
     }
   }
 
-  /* Efecto Polvo de Hadas Discreto */
+  /* Canvas: Polvo de Hadas y Hidden Mickeys Flotantes */
   const canvas = document.getElementById('disney-dust');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -462,30 +485,60 @@
   resizeCanvas();
 
   class Particle {
-    constructor() { this.reset(); }
+    constructor() {
+      this.reset();
+    }
     reset() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 1.8 + 0.3;
+      this.size = Math.random() * 1.8 + 0.4;
       this.speedY = -Math.random() * 0.4 - 0.1;
-      this.opacity = Math.random() * 0.6 + 0.1;
+      this.opacity = Math.random() * 0.5 + 0.15;
+      // 20% de probabilidad de ser un "Hidden Mickey"
+      this.isMickey = Math.random() < 0.20;
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotSpeed = (Math.random() - 0.5) * 0.02;
     }
     update() {
       this.y += this.speedY;
-      if (this.y < 0) {
+      this.rotation += this.rotSpeed;
+      if (this.y < -10) {
         this.reset();
-        this.y = canvas.height;
+        this.y = canvas.height + 10;
       }
     }
     draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
       ctx.fillStyle = `rgba(227, 199, 102, ${this.opacity})`;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
+
+      if (this.isMickey) {
+        // Dibujar silueta Mickey escondido
+        const r = this.size * 1.5;
+        // Cabeza
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+        ctx.fill();
+        // Oreja izquierda
+        ctx.beginPath();
+        ctx.arc(-r * 0.9, -r * 0.9, r * 0.58, 0, Math.PI * 2);
+        ctx.fill();
+        // Oreja derecha
+        ctx.beginPath();
+        ctx.arc(r * 0.9, -r * 0.9, r * 0.58, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Partícula dorada simple
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
     }
   }
 
-  for (let i = 0; i < 35; i++) { particles.push(new Particle()); }
+  for (let i = 0; i < 40; i++) { particles.push(new Particle()); }
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => { p.update(); p.draw(); });
