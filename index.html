@@ -1,730 +1,498 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alexis Baez — Portafolio de Conceptos Creativos | Disney Candidate</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexis Baez — Portafolio de Conceptos Creativos / Creative Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --ink:#14120f;
+    --paper:#f5efe2;
+    --paper-dim:#e9e1cd;
+    --brass:#c9a227;
+    --brass-soft:#e3c766;
+    --line: rgba(245,239,226,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  ::selection{ background:var(--brass); color:var(--ink); }
 
-    <!-- Fuentes elegantes idénticas a tu diseño original -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  /* ===== CANVAS DUST ===== */
+  #disney-dust {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 1;
+    opacity: 0.6;
+  }
 
-    <style>
-        :root {
-            --ink: #14120f;
-            --paper: #f5efe2;
-            --paper-dim: #e9e1cd;
-            --brass: #c9a227;
-            --brass-soft: #e3c766;
-            --line: rgba(245, 239, 226, 0.14);
-            --disney-blue: #002353;
-            --disney-gold: #f3d068;
-            --card-bg: rgba(245, 239, 226, 0.04);
-            --transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--brass-soft);
+  }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  /* ===== LANGUAGE TOGGLE & AUDIO CONTROLS ===== */
+  .t-en{ display:none; }
+  html.en .t-es{ display:none; }
+  html.en .t-en{ display:inline; }
+  html.en p .t-en, html.en .beat-text .t-en{ display:inline; }
+  
+  .top-controls {
+    position:fixed; top:24px; right:24px; z-index:50;
+    display:flex; gap:8px; align-items:center;
+  }
 
-        html {
-            scroll-behavior: smooth;
-        }
+  .audio-toggle {
+    display:flex; align-items:center; gap:8px;
+    background:rgba(20,18,15,0.85); backdrop-filter:blur(8px);
+    border:1px solid var(--line); border-radius:100px; padding:4px 12px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.06em;
+    color:rgba(245,239,226,0.7); cursor:pointer; transition:all .2s ease;
+  }
+  .audio-toggle:hover, .audio-toggle.playing {
+    border-color:var(--brass); color:var(--brass-soft);
+  }
 
-        body {
-            background-color: var(--ink);
-            color: var(--paper);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            position: relative;
-        }
+  .lang-toggle{
+    display:flex; gap:2px; background:rgba(20,18,15,0.75); backdrop-filter:blur(6px);
+    border:1px solid var(--line); border-radius:100px; padding:4px;
+  }
+  .lang-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.06em;
+    background:none; border:none; color:rgba(245,239,226,0.5); padding:6px 13px;
+    border-radius:100px; cursor:pointer; transition:all .2s ease;
+  }
+  .lang-btn.active{ background:var(--brass); color:var(--ink); }
 
-        /* Sparkle Canvas Background */
-        #pixie-dust-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 1;
-        }
+  /* ===== NAV / BLUEPRINT MARGIN ===== */
+  .frame{
+    position:fixed; inset:0; pointer-events:none; z-index:40;
+    border:1px solid var(--line);
+    margin:14px;
+  }
+  .frame::before, .frame::after{
+    content:''; position:absolute; width:9px; height:9px;
+    border:1px solid var(--brass);
+  }
+  .frame::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+  .frame::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
 
-        /* Overlay para activar audio (Disney Autoplay Compliance) */
-        .audio-gate {
-            position: fixed;
-            inset: 0;
-            background: rgba(20, 18, 15, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
+  header{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:64px 56px 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity:0.5;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 10%, transparent 75%);
+  }
+  .hero-top{ position:relative; display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap;}
+  .hero-name .eyebrow{ margin-bottom:8px; }
+  .hero-name h1{ font-size:1.35rem; font-weight:500; }
+  .hero-meta{ text-align:right; font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:rgba(245,239,226,0.55); line-height:1.9;}
 
-        .audio-gate.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+  .hero-main{ position:relative; max-width:920px; margin:auto 0; }
+  .hero-main .eyebrow{ margin-bottom:22px; }
+  .hero-main h2{
+    font-size:clamp(2.4rem, 6vw, 5rem);
+    line-height:1.03;
+    font-weight:600;
+  }
+  .hero-main h2 em{ font-style:italic; font-weight:500; color:var(--brass-soft); }
+  .hero-sub{
+    margin-top:28px; max-width:560px; font-size:1.05rem;
+    color:rgba(245,239,226,0.72);
+  }
 
-        .audio-gate h2 {
-            font-family: 'Fraunces', serif;
-            font-size: 2.8rem;
-            color: var(--brass-soft);
-            margin-bottom: 1rem;
-            font-weight: 300;
-        }
+  .hero-bottom{
+    position:relative; display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; flex-wrap:wrap; padding-top:60px;
+  }
+  .pitch-index{ display:flex; gap:28px; flex-wrap:wrap; }
+  .pitch-index a{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; letter-spacing:0.05em;
+    color:rgba(245,239,226,0.55); text-decoration:none; display:flex; align-items:center; gap:8px;
+    transition:color .2s ease;
+  }
+  .pitch-index a:hover{ color:var(--brass-soft); }
+  .pitch-index a span{ color:var(--brass); }
+  .scroll-cue{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:rgba(245,239,226,0.4);
+    writing-mode:vertical-rl;
+  }
 
-        .audio-gate p {
-            max-width: 500px;
-            color: var(--paper-dim);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
+  /* ===== PITCH SECTIONS ===== */
+  section.pitch{
+    position:relative;
+    padding:120px 56px;
+    border-top:1px solid var(--line);
+    overflow:hidden;
+  }
+  .pitch-inner{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns: 1fr 1fr; gap:80px; align-items:center;
+  }
+  section.pitch.reverse .pitch-inner{ direction:rtl; }
+  section.pitch.reverse .pitch-inner > *{ direction:ltr; }
 
-        .btn-magic {
-            background: linear-gradient(135deg, var(--brass) 0%, var(--brass-soft) 100%);
-            color: var(--ink);
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 25px rgba(201, 162, 39, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: var(--transition);
-        }
+  .pitch-visual{
+    aspect-ratio: 4/5; border-radius:2px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    border:1px solid var(--line);
+  }
+  .pitch-visual svg{ width:78%; height:78%; }
+  .pitch-visual img{ width:100%; height:100%; object-fit:cover; border-radius:2px; }
 
-        .btn-magic:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 0 35px rgba(227, 199, 102, 0.7);
-        }
+  .pitch-tag{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.1em;
+    text-transform:uppercase; padding:6px 12px; border:1px solid var(--line); border-radius:100px;
+    margin-bottom:26px; color:var(--paper);
+  }
+  .pitch-tag .dot{ width:6px; height:6px; border-radius:50%; }
 
-        /* Navigation Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(20, 18, 15, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--line);
-            padding: 1rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  .pitch-num{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--accent); margin-bottom:14px; display:block;}
+  .pitch-text h3{ font-size:clamp(1.9rem, 3.4vw, 2.7rem); line-height:1.08; margin-bottom:22px; }
+  .pitch-text p{ color:rgba(245,239,226,0.72); font-size:1rem; max-width:520px; margin-bottom:16px; }
+  .pitch-text p:last-of-type{ margin-bottom:0; }
+  .pitch-text strong{ color:var(--paper); font-weight:600; }
 
-        .brand {
-            font-family: 'Fraunces', serif;
-            font-size: 1.4rem;
-            color: var(--paper);
-            text-decoration: none;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+  .beats{ margin-top:32px; display:flex; flex-direction:column; gap:14px; }
+  .beat{ display:flex; gap:14px; align-items:baseline; }
+  .beat-mark{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--accent); flex-shrink:0; width:56px; }
+  .beat-text{ font-size:0.92rem; color:rgba(245,239,226,0.68); }
 
-        .brand span {
-            color: var(--brass-soft);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-left: 1px solid var(--brass);
-            padding-left: 10px;
-        }
+  .menu-chips{ margin-top:28px; display:flex; flex-wrap:wrap; gap:10px; }
+  .menu-chips span{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; padding:7px 12px;
+    border:1px dashed var(--line); border-radius:3px; color:rgba(245,239,226,0.7);
+  }
 
-        /* Reproductor de Audio Flotante en Header */
-        .disney-audio-player {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(245, 239, 226, 0.06);
-            border: 1px solid var(--brass);
-            padding: 8px 18px;
-            border-radius: 30px;
-        }
+  /* Section 1 — Restaurante Soul */
+  #soul{ --accent:#e3c766; background:linear-gradient(180deg, #14120f 0%, #171310 100%); }
+  #soul .pitch-visual{ background: linear-gradient(90deg, #1c1a17 50%, #0a0908 50%); }
 
-        .audio-info {
-            display: flex;
-            flex-direction: column;
-        }
+  /* Section 2 — Coco Ride */
+  #coco{ --accent:#ff8a3d; background:#120e0a; }
+  #coco .pitch-visual{ background: radial-gradient(ellipse at 50% 20%, #2a1a10 0%, #100a08 70%); }
 
-        .audio-title {
-            font-size: 0.75rem;
-            color: var(--brass-soft);
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+  /* Section 3 — Resort Villanos */
+  #villanos{ --accent:#8f5fd6; background:#0d0b12; }
+  #villanos .pitch-visual{ background: radial-gradient(ellipse at 50% 30%, #1c1224 0%, #0a070d 70%); }
 
-        .audio-sub {
-            font-size: 0.7rem;
-            color: rgba(245, 239, 226, 0.6);
-        }
+  /* Section 4 — Ride Moana */
+  #moana{ --accent:#3ecfb2; background:linear-gradient(180deg, #0a1412 0%, #0d1816 100%); }
+  #moana .pitch-visual{ background: radial-gradient(ellipse at 50% 70%, #102b26 0%, #081512 70%); }
 
-        .audio-btn {
-            background: transparent;
-            border: 1px solid var(--brass-soft);
-            color: var(--paper);
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+  /* Section 5 — Baby Shaolin */
+  #shaolin{ --accent:#e8542f; background:linear-gradient(180deg, #160e0a 0%, #190f0a 100%); }
+  #shaolin .pitch-visual{ background: radial-gradient(ellipse at 50% 30%, #2a160c 0%, #100a07 70%); }
 
-        .audio-btn:hover {
-            background: var(--brass);
-            color: var(--ink);
-        }
+  @media (max-width: 880px){
+    .pitch-inner{ grid-template-columns:1fr; gap:44px; }
+    section.pitch.reverse .pitch-inner{ direction:ltr; }
+    .pitch-visual{ aspect-ratio:16/10; order:-1; }
+    header{ padding:40px 24px 28px; }
+    section.pitch{ padding:80px 24px; }
+    .hero-bottom{ flex-direction:column; align-items:flex-start; gap:28px; }
+    .top-controls{ top:16px; right:16px; }
+  }
 
-        /* Hero Section */
-        .hero {
-            position: relative;
-            z-index: 2;
-            padding: 6rem 3rem 4rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
+  footer{
+    padding:80px 56px 60px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; align-items:flex-end;
+  }
+  footer h3{ font-size:1.6rem; max-width:420px; }
+  footer .foot-meta{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:rgba(245,239,226,0.5); text-align:right; line-height:1.9; }
 
-        .disney-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(201, 162, 39, 0.12);
-            border: 1px solid var(--brass);
-            color: var(--brass-soft);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero h1 {
-            font-family: 'Fraunces', serif;
-            font-size: 4rem;
-            font-weight: 300;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            color: var(--paper);
-        }
-
-        .hero h1 i {
-            font-style: italic;
-            color: var(--brass-soft);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--paper-dim);
-            max-width: 750px;
-            margin: 0 auto 2.5rem;
-            font-weight: 300;
-        }
-
-        /* Gallery Grid */
-        .portfolio-section {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 2rem 3rem 6rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        .section-header h2 {
-            font-family: 'Fraunces', serif;
-            font-size: 2.2rem;
-            font-weight: 300;
-            color: var(--paper);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: var(--brass);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(201, 162, 39, 0.2);
-        }
-
-        .card-img-wrapper {
-            position: relative;
-            height: 260px;
-            overflow: hidden;
-            background: #1e1b18;
-        }
-
-        .card-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .card:hover .card-img-wrapper img {
-            transform: scale(1.06);
-        }
-
-        .card-tag {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(20, 18, 15, 0.85);
-            border: 1px solid var(--brass-soft);
-            color: var(--brass-soft);
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .card-content {
-            padding: 1.8rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card-content h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 1.6rem;
-            font-weight: 400;
-            color: var(--paper);
-            margin-bottom: 0.6rem;
-        }
-
-        .card-content p {
-            font-size: 0.95rem;
-            color: rgba(245, 239, 226, 0.7);
-            margin-bottom: 1.5rem;
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--brass-soft);
-            font-weight: 500;
-            border-top: 1px solid rgba(245, 239, 226, 0.08);
-            padding-top: 1rem;
-        }
-
-        /* Imagineering Pitch Banner */
-        .pitch-box {
-            background: linear-gradient(135deg, rgba(0, 35, 83, 0.4) 0%, rgba(201, 162, 39, 0.1) 100%);
-            border: 1px solid var(--brass);
-            border-radius: 16px;
-            padding: 3.5rem;
-            margin-top: 5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pitch-box h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 2.2rem;
-            color: var(--paper);
-            margin-bottom: 1rem;
-        }
-
-        .pitch-box p {
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            color: var(--paper-dim);
-            font-size: 1.1rem;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn-outline {
-            border: 1px solid var(--brass);
-            color: var(--paper);
-            padding: 0.8rem 1.8rem;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-outline:hover {
-            background: var(--brass);
-            color: var(--ink);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2.5rem;
-            border-top: 1px solid var(--line);
-            color: rgba(245, 239, 226, 0.5);
-            font-size: 0.85rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 1rem;
-                flex-direction: column;
-                gap: 12px;
-            }
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .pitch-box {
-                padding: 2rem 1.5rem;
-            }
-        }
-    </style>
+  @media (max-width:640px){
+    footer{ padding:60px 24px 48px; flex-direction:column; align-items:flex-start; }
+    footer .foot-meta{ text-align:left; }
+  }
+</style>
 </head>
 <body>
 
-    <!-- Canvas para efecto Polvo de Hadas Disney -->
-    <canvas id="pixie-dust-canvas"></canvas>
+<canvas id="disney-dust"></canvas>
+<div class="frame"></div>
 
-    <!-- Modal de Inicio de Experiencia Mágica (Supera bloqueo Autoplay) -->
-    <div class="audio-gate" id="audioGate">
-        <div class="disney-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> Experience Portal</div>
-        <h2>Alexis Baez Portfolio</h2>
-        <p>Bienvenido a la presentación de conceptos creativos e Imagineering. Activa el sonido para disfrutar de una experiencia inmersiva con música orquestal inspirada en Disney.</p>
-        <button class="btn-magic" onclick="startDisneyExperience()">
-            <i class="fa-solid fa-play"></i> Entrar con Música Mágica
-        </button>
+<!-- Pista de Audio Orquestal de Fondo -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a88137.mp3?filename=fairytale-orchestral-fantasy-109038.mp3" type="audio/mpeg">
+</audio>
+
+<div class="top-controls">
+  <button class="audio-toggle" id="audioBtn" onclick="toggleDisneyAudio()">
+    <i class="fa-solid fa-music" id="audioIcon"></i>
+    <span class="t-es" id="audioTextEs">Música</span>
+    <span class="t-en" id="audioTextEn">Audio</span>
+  </button>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="es" onclick="setLang('es')">ES</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<header>
+  <div class="hero-grid"></div>
+
+  <div class="hero-top">
+    <div class="hero-name">
+      <div class="eyebrow"><span class="t-es">Portafolio creativo</span><span class="t-en">Creative Portfolio</span></div>
+      <h1>Alexis Baez</h1>
     </div>
+    <div class="hero-meta">
+      <span class="t-es">Presentado para</span><span class="t-en">Presented to</span><br>
+      THE WALT DISNEY COMPANY<br>
+      Buenos Aires, Argentina
+    </div>
+  </div>
 
-    <!-- Elemento de Audio de Disney (Streaming Instrumental Fairytale) -->
-    <audio id="disneyAudio" loop preload="auto">
-        <!-- Música orquestal de cuento de hadas estilo Disney libre de derechos -->
-        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a88137.mp3?filename=fairytale-orchestral-fantasy-109038.mp3" type="audio/mpeg">
-    </audio>
+  <div class="hero-main">
+    <div class="eyebrow"><span class="t-es">Cinco conceptos creativos</span><span class="t-en">Five Creative Concepts</span></div>
+    <h2>
+      <span class="t-es">Ideas que nacen de<br><em>lo que ya amamos</em> — y una<br>que nace de mí.</span>
+      <span class="t-en">Ideas born from<br><em>what we already love</em> —<br>and one born from me.</span>
+    </h2>
+    <p class="hero-sub">
+      <span class="t-es">Un restaurante, dos atracciones y un resort inspirados en historias que ya conocemos, más una idea 100% original pensada para chicos.</span>
+      <span class="t-en">A restaurant, two rides and a resort inspired by stories we already know, plus one 100% original idea made for kids.</span>
+    </p>
+  </div>
 
-    <!-- Header & Reproductor -->
-    <header>
-        <a href="#" class="brand">
-            Alexis Báez <span>Concept Portfolio</span>
-        </a>
+  <div class="hero-bottom">
+    <nav class="pitch-index">
+      <a href="#soul"><span>01</span> <span class="t-es">Restaurante Soul</span><span class="t-en">Soul Restaurant</span></a>
+      <a href="#coco"><span>02</span> Coco Ride</a>
+      <a href="#villanos"><span>03</span> <span class="t-es">Resort Disney Villanos</span><span class="t-en">Disney Villains Resort</span></a>
+      <a href="#moana"><span>04</span> <span class="t-es">Ride Moana</span><span class="t-en">Moana Ride</span></a>
+      <a href="#shaolin"><span>05</span> Baby Shaolin</a>
+    </nav>
+    <div class="scroll-cue"><span class="t-es">DESPLAZAR PARA VER LOS PITCHES ↓</span><span class="t-en">SCROLL TO SEE THE PITCHES ↓</span></div>
+  </div>
+</header>
 
-        <div class="disney-audio-player">
-            <div class="audio-info">
-                <span class="audio-title"><i class="fa-solid fa-music"></i> Ambient Mode</span>
-                <span class="audio-sub" id="audioStatus">Disney Fairytale Orchestra</span>
-            </div>
-            <button class="audio-btn" id="playToggleBtn" onclick="toggleAudio()" title="Reproducir / Pausar Música">
-                <i class="fa-solid fa-pause" id="playIcon"></i>
-            </button>
-            <button class="audio-btn" onclick="triggerMagicChime()" title="Probar sonido mágico">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-            </button>
-        </div>
-    </header>
+<!-- ============ 01 — RESTAURANTE SOUL ============ -->
+<section class="pitch" id="soul">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <img src="SOUL.jpg" alt="Concepto Restaurante Soul">
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 01 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#e3c766"></span><span class="t-es">Restaurante temático — inspirado en Soul</span><span class="t-en">Themed restaurant — inspired by Soul</span></div>
+      <h3><span class="t-es">Restaurante Soul</span><span class="t-en">Soul Restaurant</span></h3>
+      <p>
+        <span class="t-es">Un mismo salón, dos mitades. De un lado, la luz: mesas rodeadas de recuerdos felices, música y color. Del otro, una penumbra cálida donde se honra a quienes ya no están. No es un contraste triste — es la idea central de <strong>Soul</strong> hecha espacio: la vida y el más allá, sentados a la misma mesa.</span>
+        <span class="t-en">One dining room, two halves. On one side, the light: tables surrounded by happy memories, music and color. On the other, a warm dimness where loved ones who are gone are honored. It's not a sad contrast — it's the central idea of <strong>Soul</strong> made physical: life and the afterlife, seated at the same table.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">RITUAL</div><div class="beat-mark t-en">RITUAL</div><div class="beat-text"><span class="t-es">Pizarrones en las paredes para dejar un mensaje a un hijo, hermano, pareja o padre — presente o ausente.</span><span class="t-en">Chalkboard walls where guests can leave a message to a child, sibling, partner or parent — present or gone.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">SONIDO</div><div class="beat-mark t-en">SOUND</div><div class="beat-text"><span class="t-es">Piano en vivo y jazz de fondo, en referencia directa a la banda sonora de la película.</span><span class="t-en">Live piano and background jazz, a direct nod to the film's soundtrack.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">DETALLE</div><div class="beat-mark t-en">DETAIL</div><div class="beat-text"><span class="t-es">Arte original de la película en las paredes, integrado al diseño del salón.</span><span class="t-en">Original film artwork on the walls, integrated into the dining room design.</span></div></div>
+      </div>
+      <div class="menu-chips">
+        <span>Burger Ever</span><span>Potatos Love</span><span>Pasta &amp; Meals Hugs</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="disney-badge">
-            <i class="fa-solid fa-castle"></i> Disney Candidate Portfolio 2026
-        </div>
-        <h1>Diseñando Experiencias que <i>Inspiran Magia</i></h1>
-        <p>Exploración de conceptos de atracción, narrativa visual y diseño experiential para The Walt Disney Company & Disney Imagineering.</p>
-    </section>
+<!-- ============ 02 — COCO RIDE ============ -->
+<section class="pitch reverse" id="coco">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <img src="COCO RIDE.jpg" alt="Concepto Coco Ride">
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 02 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#ff8a3d"></span><span class="t-es">Montaña rusa — inspirada en Coco · Epcot, pabellón de México</span><span class="t-en">Roller coaster — inspired by Coco · Epcot, Mexico Pavilion</span></div>
+      <h3>Coco Ride</h3>
+      <p>
+        <span class="t-es">La atracción empieza tranquila, entre las paredes iluminadas del mundo de Miguel y su sueño con la música. Sin aviso, el ride cruza al mundo de los muertos y el ritmo cambia: Ernesto de la Cruz persigue, y Pepita y los alebrijes aparecen para guiar y proteger el regreso a casa.</span>
+        <span class="t-en">The ride starts calm, among the illuminated walls of Miguel's world and his dream of music. Without warning, it crosses into the Land of the Dead and the pace shifts: Ernesto de la Cruz gives chase, and Pepita and the alebrijes appear to guide and protect the way back home.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">ACTO I</div><div class="beat-mark t-en">ACT I</div><div class="beat-text"><span class="t-es">Mundo humano — la historia de Miguel, ritmo tranquilo, luz cálida.</span><span class="t-en">Human world — Miguel's story, calm pace, warm light.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ACTO II</div><div class="beat-mark t-en">ACT II</div><div class="beat-text"><span class="t-es">Transición al mundo de los muertos — el ride acelera, persecución de Ernesto de la Cruz.</span><span class="t-en">Transition to the Land of the Dead — the ride accelerates, Ernesto de la Cruz gives chase.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ACTO III</div><div class="beat-mark t-en">ACT III</div><div class="beat-text"><span class="t-es">Alebrijes y Pepita guían el regreso; cierre con "Un Poco Loco" y la familia de Miguel viéndolo convertirse en músico.</span><span class="t-en">Alebrijes and Pepita guide the return; closes with "Un Poco Loco" and Miguel's family watching him become a musician.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Galería de Proyectos -->
-    <main class="portfolio-section">
-        <div class="section-header">
-            <h2>Proyectos & Conceptos Creativos</h2>
-            <span style="color: var(--brass-soft); font-size: 0.9rem;">5 Proyectos Destacados</span>
-        </div>
+<!-- ============ 03 — RESORT VILLANOS ============ -->
+<section class="pitch" id="villanos">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <img src="resort.jpg" alt="Concepto Resort Disney Villanos">
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 03 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#8f5fd6"></span><span class="t-es">Resort temático — villanos de Disney</span><span class="t-en">Themed resort — Disney villains</span></div>
+      <h3><span class="t-es">Resort Disney Villanos</span><span class="t-en">Disney Villains Resort</span></h3>
+      <p>
+        <span class="t-es">Un resort dividido en cuatro alas, cada una construida desde la estética de un villano icónico — no como decoración, sino como inmersión total, desde la habitación hasta el pasillo.</span>
+        <span class="t-en">A resort divided into four wings, each built from the aesthetic of an iconic villain — not as decoration, but as total immersion, from the hallway to the room itself.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">ALA I</div><div class="beat-mark t-en">WING I</div><div class="beat-text"><span class="t-es">Maléfica — habitaciones temáticas dentro de su tierra.</span><span class="t-en">Maleficent — themed rooms within her realm.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ALA II</div><div class="beat-mark t-en">WING II</div><div class="beat-text"><span class="t-es">Úrsula (La Sirenita) — su reino sumergido como segunda zona.</span><span class="t-en">Ursula (The Little Mermaid) — her sunken kingdom as the second zone.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ALA III</div><div class="beat-mark t-en">WING III</div><div class="beat-text"><span class="t-es">Scar — figuras de Scar y Mufasa en la escena de la cornisa, y las hienas presentes en el recorrido.</span><span class="t-en">Scar — figures of Scar and Mufasa in the cliff-edge scene, with hyenas present throughout.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ALA IV</div><div class="beat-mark t-en">WING IV</div><div class="beat-text"><span class="t-es">Cruella de Vil — perros enjaulados, motivos de sus tapados de piel y habitaciones con su estilo de vestir.</span><span class="t-en">Cruella de Vil — caged dogs, fur-coat motifs and rooms styled after her signature look.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="grid">
+<!-- ============ 04 — RIDE MOANA ============ -->
+<section class="pitch reverse" id="moana">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <img src="MOANA.jpg" alt="Concepto Ride Moana">
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 04 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#3ecfb2"></span><span class="t-es">Atracción simulador — inspirada en Moana</span><span class="t-en">Simulator ride — inspired by Moana</span></div>
+      <h3><span class="t-es">Ride Moana</span><span class="t-en">Moana Ride</span></h3>
+      <p>
+        <span class="t-es">El bote es el asiento. Los lentes son la puerta de entrada. Desde el primer segundo, el cuerpo cree que está en el océano: el viento cruza la cara, el aire huele a mar, y las olas empujan con fuerza real mientras la aventura recorre los momentos más importantes de la película.</span>
+        <span class="t-en">The boat is the seat. The goggles are the doorway in. From the first second, the body believes it's at sea: wind crosses your face, the air smells like ocean, and the waves push with real force as the adventure moves through the film's most important moments.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">FILA</div><div class="beat-mark t-en">QUEUE</div><div class="beat-text"><span class="t-es">Paredes pintadas con olas que se iluminan en la oscuridad, junto a murales de los ancestros de Moana y de los personajes centrales de la película, convirtiendo la espera en la primera parte del recorrido.</span><span class="t-en">Wave murals painted on the walls that glow in the dark, alongside murals of Moana's ancestors and the film's central characters, turning the wait itself into the first part of the ride.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ASIENTO</div><div class="beat-mark t-en">SEAT</div><div class="beat-text"><span class="t-es">El bote funciona como asiento físico, sincronizado con el movimiento del simulador.</span><span class="t-en">The boat works as a physical seat, synced with the simulator's motion.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">INMERSIÓN</div><div class="beat-mark t-en">IMMERSION</div><div class="beat-text"><span class="t-es">Lentes que sumergen al visitante dentro del juego/película desde el arranque del recorrido.</span><span class="t-en">Goggles that immerse the guest inside the game/film from the moment the ride begins.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">SENSORIAL</div><div class="beat-mark t-en">SENSORY</div><div class="beat-text"><span class="t-es">Olor a mar, viento oceánico y el poder de las olas como parte física de la experiencia, no solo visual.</span><span class="t-en">Sea air, ocean wind and the power of the waves as a physical part of the experience, not just a visual one.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">ARCO</div><div class="beat-mark t-en">ARC</div><div class="beat-text"><span class="t-es">Recorre los momentos más importantes de la película, de principio a fin, con acción y emoción en cada tramo.</span><span class="t-en">Moves through the film's most important moments, start to finish, with action and emotion at every turn.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <!-- Proyecto 1: Baby Shaolin -->
-            <article class="card" onmouseenter="triggerMagicChime()">
-                <div class="card-img-wrapper">
-                    <span class="card-tag">Animated Series</span>
-                    <img src="BABY SHAOLIN.jpg" alt="Baby Shaolin Concept" onerror="this.src='https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80'">
-                </div>
-                <div class="card-content">
-                    <div>
-                        <h3>BABY SHAOLIN</h3>
-                        <p>Desarrollo visual y concepto narrativo para serie animada con enfoque en artes marciales, sabiduría y descubrimiento.</p>
-                    </div>
-                    <div class="card-footer">
-                        <span>Concept Art & Story</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </article>
+<!-- ============ 05 — BABY SHAOLIN ============ -->
+<section class="pitch" id="shaolin">
+  <div class="pitch-inner">
+    <div class="pitch-visual">
+      <img src="BABY SHAOLIN.jpg" alt="Concepto Baby Shaolin">
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 05 / 05</span>
+      <div class="pitch-tag"><span class="dot" style="background:#e8542f"></span><span class="t-es">Serie animada — propiedad original</span><span class="t-en">Animated series — original property</span></div>
+      <h3>Baby Shaolin</h3>
+      <p>
+        <span class="t-es">En la aldea de <strong>Bum Bum</strong> vive Baby Shaolin junto a su padre y su madre, guardianes del templo. Una mañana, un discípulo de su padre roba el <strong>biberón dorado</strong> — el artefacto que mantiene el equilibrio y la paz del pueblo — y el caos se apodera de todo. Nuestro pequeño guerrero deberá cruzar hacia el mundo oscuro para recuperarlo y devolverle la calma a su hogar.</span>
+        <span class="t-en">In the village of <strong>Bum Bum</strong> lives Baby Shaolin, alongside his father and mother, guardians of the temple. One morning, one of his father's disciples steals the <strong>golden bottle</strong> — the artifact that keeps the village in balance and peace — and chaos takes over. Our tiny warrior must cross into the dark world to get it back and bring calm home again.</span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">MUNDO</div><div class="beat-mark t-en">WORLD</div><div class="beat-text"><span class="t-es">La aldea Bum Bum, un templo shaolin en miniatura y un "mundo oscuro" como territorio de la aventura.</span><span class="t-en">The village of Bum Bum, a miniature shaolin temple, and a "dark world" as the territory of the adventure.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">CONFLICTO</div><div class="beat-mark t-en">CONFLICT</div><div class="beat-text"><span class="t-es">El robo del biberón dorado por un discípulo de su propio padre — traición cercana, no un villano lejano.</span><span class="t-en">The golden bottle stolen by one of his own father's disciples — betrayal close to home, not a distant villain.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">HÉROE</div><div class="beat-mark t-en">HERO</div><div class="beat-text"><span class="t-es">Un bebé guerrero shaolin: la mezcla de ternura infantil y espíritu de artes marciales como identidad visual central.</span><span class="t-en">A baby shaolin warrior: the mix of childlike sweetness and martial-arts spirit as the core visual identity.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">PARA CHICOS</div><div class="beat-mark t-en">FOR KIDS</div><div class="beat-text"><span class="t-es">Aventura, humor visual y un objeto cotidiano (el biberón) elevado a artefacto legendario — fácil de entender y de querer.</span><span class="t-en">Adventure, visual humor and an everyday object (the baby bottle) elevated to legendary artifact — easy to understand and easy to love.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <!-- Proyecto 2: Coco Ride -->
-            <article class="card" onmouseenter="triggerMagicChime()">
-                <div class="card-img-wrapper">
-                    <span class="card-tag">Imagineering Theme Park</span>
-                    <img src="COCO RIDE.jpg" alt="Coco Ride Concept" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80'">
-                </div>
-                <div class="card-content">
-                    <div>
-                        <h3>COCO: Journey to the Land of the Dead</h3>
-                        <p>Diseño de atracción inmersiva (Dark Ride) que transporta a los invitados a través del Puente de Cempasúchil con iluminación holográfica.</p>
-                    </div>
-                    <div class="card-footer">
-                        <span>Attraction & Experiential Design</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </article>
+<footer>
+  <h3><span class="t-es">Gracias por leer estos cinco pitches.</span><span class="t-en">Thanks for reading these five pitches.</span></h3>
+  <div class="foot-meta">
+    ALEXIS BAEZ<br>
+    <span class="t-es">Portafolio creativo — 2026</span><span class="t-en">Creative Portfolio — 2026</span>
+  </div>
+</footer>
 
-            <!-- Proyecto 3: Moana -->
-            <article class="card" onmouseenter="triggerMagicChime()">
-                <div class="card-img-wrapper">
-                    <span class="card-tag">Interactive Environment</span>
-                    <img src="MOANA.jpg" alt="Moana Concept" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80'">
-                </div>
-                <div class="card-content">
-                    <div>
-                        <h3>MOANA: Wayfinding Experience</h3>
-                        <p>Instalación interactiva con agua reactiva y proyección mapeada para pabellones temáticos y parques de Disney.</p>
-                    </div>
-                    <div class="card-footer">
-                        <span>Interactive & Visual FX</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </article>
+<script>
+  function setLang(lang){
+    document.documentElement.classList.toggle('en', lang === 'en');
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+  }
 
-            <!-- Proyecto 4: Soul -->
-            <article class="card" onmouseenter="triggerMagicChime()">
-                <div class="card-img-wrapper">
-                    <span class="card-tag">Sound & Lighting Installation</span>
-                    <img src="SOUL.jpg" alt="Soul Concept" onerror="this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80'">
-                </div>
-                <div class="card-content">
-                    <div>
-                        <h3>SOUL: The Great Before Space</h3>
-                        <p>Experiencia sensorial basada en sonido envolvente, jazz interactivo y partículas lumínicas que reaccionan a la música.</p>
-                    </div>
-                    <div class="card-footer">
-                        <span>Audio-Visual Experience</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </article>
+  /* Control de Audio de Disney */
+  const audio = document.getElementById('bgMusic');
+  const audioBtn = document.getElementById('audioBtn');
+  const audioIcon = document.getElementById('audioIcon');
 
-            <!-- Proyecto 5: Resort Concept -->
-            <article class="card" onmouseenter="triggerMagicChime()">
-                <div class="card-img-wrapper">
-                    <span class="card-tag">Disney Hotel & Resort</span>
-                    <img src="resort.jpg" alt="Resort Concept" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80'">
-                </div>
-                <div class="card-content">
-                    <div>
-                        <h3>DISNEY CONCEPT RESORT</h3>
-                        <p>Propuesta arquitectónica e interiorismo temático para la próxima generación de hoteles de experiencia inmersiva.</p>
-                    </div>
-                    <div class="card-footer">
-                        <span>Spatial & Architecture Design</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </article>
+  function toggleDisneyAudio() {
+    if (audio.paused) {
+      audio.play();
+      audioBtn.classList.add('playing');
+      audioIcon.className = 'fa-solid fa-volume-high';
+    } else {
+      audio.pause();
+      audioBtn.classList.remove('playing');
+      audioIcon.className = 'fa-solid fa-music';
+    }
+  }
 
-        </div>
+  /* Efecto Polvo de Hadas Discreto */
+  const canvas = document.getElementById('disney-dust');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
 
-        <!-- Seccion Pitch para Reclutadores Disney -->
-        <div class="pitch-box">
-            <div class="disney-badge"><i class="fa-solid fa-handshake"></i> Why Disney Imagineering?</div>
-            <h3>Creando historias que perduran por generaciones</h3>
-            <p>Combino pensamiento creativo, diseño narrativo y tecnología para transformar ideas conceptuales en experiencias inolvidables.</p>
-            <div class="contact-links">
-                <a href="https://github.com/alexrenebaez-create/portafolio-disney" target="_blank" class="btn-outline">
-                    <i class="fa-brands fa-github"></i> Código en GitHub
-                </a>
-                <a href="mailto:alexrenebaez@gmail.com" class="btn-magic" style="text-decoration: none;">
-                    <i class="fa-solid fa-paper-plane"></i> Contactar para entrevista
-                </a>
-            </div>
-        </div>
-    </main>
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
-    <footer>
-        <p>© 2026 Alexis Báez — Portafolio diseñado para la búsqueda de talentos en The Walt Disney Company.</p>
-    </footer>
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 1.8 + 0.3;
+      this.speedY = -Math.random() * 0.4 - 0.1;
+      this.opacity = Math.random() * 0.6 + 0.1;
+    }
+    update() {
+      this.y += this.speedY;
+      if (this.y < 0) {
+        this.reset();
+        this.y = canvas.height;
+      }
+    }
+    draw() {
+      ctx.fillStyle = `rgba(227, 199, 102, ${this.opacity})`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
 
-    <!-- Scripts de Audio y Efectos Visuales -->
-    <script>
-        // Audio Controls
-        const audio = document.getElementById('disneyAudio');
-        const playToggleBtn = document.getElementById('playToggleBtn');
-        const playIcon = document.getElementById('playIcon');
-        const audioGate = document.getElementById('audioGate');
-        const audioStatus = document.getElementById('audioStatus');
+  for (let i = 0; i < 35; i++) { particles.push(new Particle()); }
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
 
-        function startDisneyExperience() {
-            audioGate.classList.add('hidden');
-            audio.play().then(() => {
-                playIcon.className = 'fa-solid fa-pause';
-                audioStatus.textContent = 'Música Mágica Sonando';
-            }).catch(err => {
-                console.log('Autoplay bloqueado o interactuado:', err);
-            });
-            triggerMagicChime();
-        }
-
-        function toggleAudio() {
-            if (audio.paused) {
-                audio.play();
-                playIcon.className = 'fa-solid fa-pause';
-                audioStatus.textContent = 'Música Mágica Sonando';
-            } else {
-                audio.pause();
-                playIcon.className = 'fa-solid fa-play';
-                audioStatus.textContent = 'Pausado';
-            }
-        }
-
-        // Sintetizador Web Audio API para campanadas mágicas tipo "Disney Fairytale Sparkle"
-        let audioCtx;
-        function triggerMagicChime() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-
-                // Generar arpegio de campanadas mágicas (Polvo de Hadas)
-                const frequencies = [1046.50, 1318.51, 1567.98, 2093.00, 2637.02]; // C6, E6, G6, C7, E7
-                frequencies.forEach((freq, index) => {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (index * 0.06));
-
-                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime + (index * 0.06));
-                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + (index * 0.06) + 0.6);
-
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-
-                    osc.start(audioCtx.currentTime + (index * 0.06));
-                    osc.stop(audioCtx.currentTime + (index * 0.06) + 0.6);
-                });
-            } catch (e) {
-                // Fallback silencioso si no se soporta AudioContext
-            }
-        }
-
-        // Animación de partículas Pixie Dust en Canvas
-        const canvas = document.getElementById('pixie-dust-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2.5 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = -Math.random() * 0.8 - 0.2;
-                this.opacity = Math.random() * 0.8 + 0.2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.y < 0 || this.opacity <= 0) {
-                    this.reset();
-                    this.y = canvas.height;
-                }
-            }
-            draw() {
-                ctx.fillStyle = `rgba(243, 208, 104, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < 45; i++) {
-            particles.push(new Particle());
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-    </script>
 </body>
 </html>
