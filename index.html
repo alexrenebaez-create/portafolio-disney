@@ -153,6 +153,7 @@
   }
 
   /* ===== PITCH SECTIONS ===== */
+  main, header, footer, nav, section.pitch{position:relative;z-index:20;}
   section.pitch{
     position:relative;
     padding:120px 56px;
@@ -534,26 +535,366 @@
     .world-ribbon{top:12px;left:12px;}
   }
 
+
+  /* ===== IMAGINEERING TITLE DRAWING ANIMATION ===== */
+  .imagineering-lockup{
+    position:relative;
+    width:min(780px,88vw);
+    margin:0 auto;
+    overflow:visible;
+  }
+
+  .intro-logo-premium{
+    width:100%;
+    height:auto;
+    overflow:visible;
+    filter:drop-shadow(0 0 22px rgba(216,182,90,.12));
+  }
+
+  .imagine-title{
+    opacity:0;
+    stroke:rgba(255,240,176,.55);
+    stroke-width:.35;
+    paint-order:stroke fill;
+    clip-path:inset(0 100% 0 0);
+    animation:titleDraw 2.1s cubic-bezier(.16,1,.3,1) .35s forwards;
+  }
+
+  .story-title{
+    opacity:0;
+    transform-origin:center;
+    animation:storyReveal 1s ease 1.55s forwards;
+  }
+
+  .magic-pencil{
+    transform-origin:32px 133px;
+    animation:pencilWrite 2.2s cubic-bezier(.16,1,.3,1) forwards;
+  }
+
+  .magic-trail{
+    stroke-dashoffset:900;
+    animation:trailDraw 2.25s cubic-bezier(.16,1,.3,1) forwards,
+               trailGlow 1.4s ease 2s infinite alternate;
+  }
+
+  .title-sparkles{
+    opacity:0;
+    transform-origin:center;
+    animation:sparkleBurst 1.6s ease 1.55s forwards;
+  }
+
+  .title-sparkles circle,
+  .title-sparkles path{
+    animation:sparkleTwinkle 1.6s ease-in-out infinite alternate;
+  }
+
+  .pencil-caption{
+    margin-top:-4px;
+    font:500 .58rem/1 'IBM Plex Mono',monospace;
+    letter-spacing:.28em;
+    color:rgba(245,239,226,.42);
+    opacity:0;
+    animation:captionReveal .9s ease 2.15s forwards;
+  }
+
+  @keyframes titleDraw{
+    0%{opacity:0;clip-path:inset(0 100% 0 0);filter:blur(7px) drop-shadow(0 0 0 transparent);}
+    35%{opacity:1;}
+    100%{opacity:1;clip-path:inset(0 0 0 0);filter:blur(0) drop-shadow(0 0 18px rgba(216,182,90,.22));}
+  }
+
+  @keyframes storyReveal{
+    0%{opacity:0;transform:translateY(12px);letter-spacing:14px;}
+    100%{opacity:.92;transform:translateY(0);letter-spacing:9px;}
+  }
+
+  @keyframes pencilWrite{
+    0%{transform:translate(-90px,70px) rotate(-28deg);opacity:0;}
+    12%{opacity:1;}
+    45%{transform:translate(180px,20px) rotate(-20deg);}
+    72%{transform:translate(480px,-10px) rotate(-13deg);}
+    100%{transform:translate(760px,-70px) rotate(-8deg);opacity:0;}
+  }
+
+  @keyframes trailDraw{
+    0%{stroke-dashoffset:900;opacity:0;}
+    10%{opacity:.3;}
+    70%{opacity:1;}
+    100%{stroke-dashoffset:0;opacity:.8;}
+  }
+
+  @keyframes trailGlow{
+    from{filter:drop-shadow(0 0 2px rgba(255,240,176,.25));}
+    to{filter:drop-shadow(0 0 8px rgba(255,240,176,.9));}
+  }
+
+  @keyframes sparkleBurst{
+    0%{opacity:0;transform:scale(.55) rotate(-15deg);}
+    55%{opacity:1;transform:scale(1.2) rotate(5deg);}
+    100%{opacity:.85;transform:scale(1) rotate(0);}
+  }
+
+  @keyframes sparkleTwinkle{
+    from{opacity:.35;transform:scale(.75);}
+    to{opacity:1;transform:scale(1.25);}
+  }
+
+  @keyframes captionReveal{
+    from{opacity:0;letter-spacing:.42em;}
+    to{opacity:1;letter-spacing:.28em;}
+  }
+
+  /* Interactive magic particles following the cursor in the intro */
+  #introMagicCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  .intro-stage{z-index:3;}
+
+  @media (prefers-reduced-motion: reduce){
+    .imagine-title,
+    .story-title,
+    .magic-pencil,
+    .magic-trail,
+    .title-sparkles,
+    .pencil-caption{
+      animation:none !important;
+      opacity:1 !important;
+      clip-path:none !important;
+      transform:none !important;
+    }
+    .magic-pencil{opacity:.9 !important;}
+    .magic-trail{stroke-dashoffset:0 !important;}
+  }
+
+
+  /* ============================================================
+     MAP MAGIC — FOOTSTEPS + CONSTELLATION BACKGROUND
+     ============================================================ */
+  #mapMagicCanvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:12;
+    opacity:.9;
+  }
+
+  /* The star field sits behind the content, but above the page background. */
+  #starConstellation{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+    overflow:hidden;
+    opacity:.72;
+    background:
+      radial-gradient(circle at 16% 20%, rgba(255,240,176,.62) 0 1px, transparent 1.8px),
+      radial-gradient(circle at 83% 18%, rgba(216,182,90,.55) 0 1px, transparent 1.8px),
+      radial-gradient(circle at 68% 74%, rgba(255,240,176,.42) 0 1px, transparent 1.8px),
+      radial-gradient(circle at 32% 82%, rgba(216,182,90,.42) 0 1px, transparent 1.8px);
+    background-size: 173px 151px, 211px 187px, 239px 203px, 191px 229px;
+    animation: constellationDrift 35s linear infinite;
+    mix-blend-mode:screen;
+  }
+
+  #starConstellation::before,
+  #starConstellation::after{
+    content:"";
+    position:absolute;
+    width:210px;
+    height:150px;
+    border-radius:50%;
+    opacity:.24;
+    filter:blur(.2px);
+  }
+
+  /* Two deliberately imperfect, offset arcs: the silhouette is suggested,
+     never drawn as a literal logo. */
+  #starConstellation::before{
+    left:calc(50% - 150px);
+    top:18%;
+    border:1px solid rgba(216,182,90,.15);
+    border-bottom-color:transparent;
+    transform:rotate(-11deg);
+    box-shadow:
+      -92px -28px 0 -87px rgba(244,223,150,.9),
+      -55px -47px 0 -51px rgba(244,223,150,.8),
+      116px -25px 0 -114px rgba(244,223,150,.85),
+      154px -48px 0 -150px rgba(244,223,150,.72);
+  }
+
+  #starConstellation::after{
+    left:calc(50% - 92px);
+    top:20%;
+    width:185px;
+    height:122px;
+    border:1px solid rgba(244,223,150,.11);
+    border-top-color:transparent;
+    transform:rotate(9deg);
+    box-shadow:
+      -65px -35px 0 -63px rgba(244,223,150,.8),
+      101px -31px 0 -99px rgba(244,223,150,.78),
+      19px -58px 0 -17px rgba(244,223,150,.62);
+  }
+
+  @keyframes constellationDrift{
+    from{transform:translate3d(0,0,0) scale(1);}
+    50%{transform:translate3d(-14px,8px,0) scale(1.015);}
+    to{transform:translate3d(0,0,0) scale(1);}
+  }
+
+  /* Small map-style footstep markers. */
+  .map-step{
+    position:fixed;
+    width:10px;
+    height:16px;
+    border:1px solid rgba(244,223,150,.78);
+    border-radius:62% 48% 48% 62%;
+    background:rgba(244,223,150,.045);
+    box-shadow:0 0 9px rgba(244,223,150,.18);
+    pointer-events:none;
+    z-index:18;
+    opacity:0;
+    transform-origin:50% 80%;
+  }
+
+  .map-step::after{
+    content:"";
+    position:absolute;
+    width:3px;
+    height:5px;
+    left:1px;
+    bottom:-5px;
+    border-radius:50%;
+    background:rgba(244,223,150,.42);
+  }
+
+  .map-step.left{transform:rotate(-18deg) scale(.82);}
+  .map-step.right{transform:rotate(18deg) scale(.82);}
+
+  .map-step.is-visible{
+    animation:stepAppear .95s ease forwards;
+  }
+
+  @keyframes stepAppear{
+    0%{opacity:0;transform:translateY(7px) rotate(var(--angle)) scale(.65);}
+    25%{opacity:.9;}
+    100%{opacity:.28;transform:translateY(0) rotate(var(--angle)) scale(.82);}
+  }
+
+  /* A tiny "you are here" pulse that travels with the invisible walker. */
+  .walker-pulse{
+    position:fixed;
+    width:5px;height:5px;
+    border-radius:50%;
+    background:#f4df96;
+    box-shadow:0 0 0 0 rgba(244,223,150,.45),0 0 14px rgba(244,223,150,.7);
+    pointer-events:none;
+    z-index:19;
+    opacity:.75;
+    animation:walkerPulse 1.7s ease-out infinite;
+  }
+
+  @keyframes walkerPulse{
+    0%{box-shadow:0 0 0 0 rgba(244,223,150,.45),0 0 10px rgba(244,223,150,.65);}
+    70%{box-shadow:0 0 0 14px rgba(244,223,150,0),0 0 18px rgba(244,223,150,.2);}
+    100%{box-shadow:0 0 0 0 rgba(244,223,150,0),0 0 8px rgba(244,223,150,.1);}
+  }
+
+  @media (max-width:700px){
+    #mapMagicCanvas{opacity:.7;}
+    #starConstellation{opacity:.52;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    #starConstellation{animation:none;}
+    .map-step,.walker-pulse{display:none;}
+  }
+
 </style>
 </head>
 <body class="premium-mode">
+  <!-- MAP MAGIC: walking trail + constellation field -->
+  <canvas id="mapMagicCanvas" aria-hidden="true"></canvas>
+  <div id="starConstellation" aria-hidden="true"></div>
 
   <div id="attractionIntro" aria-label="Apertura de la presentación">
+    <canvas id="introMagicCanvas"></canvas>
     <div class="intro-stars"></div>
     <div class="intro-orbit"></div>
     <div class="intro-stage">
-      <div class="intro-kicker">Alexis Baez · Creative Portfolio · 2026</div>
-      <svg class="intro-logo" viewBox="0 0 500 100" role="img" aria-label="Creative Imagineering Presentation">
-        <path d="M55 78V22h18l30 38 30-38h18v56h-16V47l-27 33h-10L71 47v31H55Z"
-              fill="none" stroke="#d8b65a" stroke-width="2"/>
-        <circle cx="207" cy="50" r="29" fill="none" stroke="#d8b65a" stroke-width="1.4"/>
-        <circle cx="185" cy="25" r="13" fill="none" stroke="#d8b65a" stroke-width="1.2"/>
-        <circle cx="229" cy="25" r="13" fill="none" stroke="#d8b65a" stroke-width="1.2"/>
-        <path d="M264 70V30h17l28 27 28-27h17v40h-16V52l-25 23h-8l-25-23v18h-16Z"
-              fill="none" stroke="#d8b65a" stroke-width="2"/>
-        <text x="382" y="58" fill="#f5efe2" font-family="IBM Plex Mono, monospace"
-              font-size="14" letter-spacing="3">STORY</text>
-      </svg>
+      <div class="intro-kicker">ALEXIS BAEZ · CREATIVE PORTFOLIO · 2026</div>
+      
+      <div class="imagineering-lockup" aria-label="IMAGINEERING · STORY">
+        <svg class="intro-logo intro-logo-premium" viewBox="0 0 900 190" role="img">
+          <defs>
+            <linearGradient id="imagineGold" x1="0" x2="1">
+              <stop offset="0" stop-color="#d8b65a"/>
+              <stop offset=".45" stop-color="#fff0b0"/>
+              <stop offset="1" stop-color="#d8b65a"/>
+            </linearGradient>
+            <filter id="titleGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Magic trail -->
+          <path class="magic-trail"
+                d="M75 148 C180 45, 250 166, 360 82 S565 45, 690 104 S790 65, 850 38"
+                fill="none" stroke="url(#imagineGold)" stroke-width="2.5"
+                stroke-linecap="round" stroke-dasharray="7 14"/>
+
+          <!-- Pencil -->
+          <g class="magic-pencil" transform="translate(32 133) rotate(-28)">
+            <rect x="0" y="-7" width="125" height="14" rx="4"
+                  fill="#c99c4d" stroke="#f4df96" stroke-width="1.2"/>
+            <rect x="12" y="-7" width="16" height="14" fill="#f0d47e"/>
+            <polygon points="125,-7 149,0 125,7" fill="#e6d3aa"/>
+            <polygon points="149,0 138,-3 138,3" fill="#33291c"/>
+            <path d="M102-7v14" stroke="#8f6930" stroke-width="2"/>
+            <circle cx="22" cy="0" r="3" fill="#fff3bd"/>
+          </g>
+
+          <!-- Main title -->
+          <text class="imagine-title" x="450" y="101" text-anchor="middle"
+                font-family="Fraunces, Georgia, serif" font-size="83"
+                font-weight="600" letter-spacing="2"
+                fill="url(#imagineGold)" filter="url(#titleGlow)">
+            IMAGINEERING
+          </text>
+
+          <!-- Story -->
+          <text class="story-title" x="450" y="151" text-anchor="middle"
+                font-family="IBM Plex Mono, monospace" font-size="21"
+                letter-spacing="9" fill="#f5efe2">
+            · STORY ·
+          </text>
+
+          <!-- Sparkles -->
+          <g class="title-sparkles" fill="#fff0b0">
+            <circle cx="190" cy="52" r="3"/>
+            <circle cx="254" cy="133" r="2.5"/>
+            <circle cx="660" cy="48" r="3"/>
+            <circle cx="735" cy="118" r="2.5"/>
+            <path d="M785 70l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/>
+            <path d="M120 92l3 8 8 3-8 3-3 8-3-8-8-3 8-3z"/>
+          </g>
+        </svg>
+
+        <div class="pencil-caption">DRAW · IMAGINE · BUILD</div>
+      </div>
+
       <div class="intro-title">Step inside the <em>ideas.</em></div>
       <p class="intro-sub">Una presentación inmersiva de cinco conceptos. Cada mundo tiene su propio ritmo, atmósfera y lenguaje visual.</p>
       <button class="intro-btn" id="enterExperience">ENTER THE EXPERIENCE <span class="arrow">→</span></button>
@@ -1259,6 +1600,242 @@
       enterTheExperience();
     }
   });
+
+
+  /* ===== MAGIC DUST AROUND THE INTRO TITLE ===== */
+  const introMagicCanvas = document.getElementById('introMagicCanvas');
+  const magicCtx = introMagicCanvas ? introMagicCanvas.getContext('2d') : null;
+  const magicParticles = [];
+  let magicRAF = null;
+  let magicMouse = {x:-9999,y:-9999};
+
+  function resizeIntroMagic(){
+    if(!introMagicCanvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    introMagicCanvas.width = window.innerWidth * dpr;
+    introMagicCanvas.height = window.innerHeight * dpr;
+    introMagicCanvas.style.width = window.innerWidth + 'px';
+    introMagicCanvas.style.height = window.innerHeight + 'px';
+    magicCtx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function spawnMagic(x,y,count=2){
+    for(let i=0;i<count;i++){
+      magicParticles.push({
+        x:x+(Math.random()-.5)*12,
+        y:y+(Math.random()-.5)*12,
+        vx:(Math.random()-.5)*1.5,
+        vy:-Math.random()*1.6-.2,
+        life:1,
+        size:Math.random()*2.6+.6,
+        spin:Math.random()*Math.PI*2
+      });
+    }
+  }
+
+  function drawMagic(){
+    if(!magicCtx) return;
+    magicCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+    // Cursor trail while the intro is visible.
+    if(!intro.classList.contains('is-hidden') && magicMouse.x > -1000){
+      spawnMagic(magicMouse.x, magicMouse.y, 3);
+    }
+
+    for(let i=magicParticles.length-1;i>=0;i--){
+      const p = magicParticles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += .012;
+      p.vx *= .985;
+      p.life -= .012;
+      p.spin += .08;
+
+      magicCtx.save();
+      magicCtx.translate(p.x,p.y);
+      magicCtx.rotate(p.spin);
+      magicCtx.globalAlpha = Math.max(0,p.life);
+      magicCtx.fillStyle = '#f4df96';
+
+      // Tiny four-point magical spark.
+      magicCtx.beginPath();
+      magicCtx.moveTo(0,-p.size*2.5);
+      magicCtx.lineTo(p.size*.7,0);
+      magicCtx.lineTo(0,p.size*2.5);
+      magicCtx.lineTo(-p.size*.7,0);
+      magicCtx.closePath();
+      magicCtx.fill();
+      magicCtx.restore();
+
+      if(p.life <= 0) magicParticles.splice(i,1);
+    }
+
+    magicRAF = requestAnimationFrame(drawMagic);
+  }
+
+  if(introMagicCanvas){
+    resizeIntroMagic();
+    window.addEventListener('resize', resizeIntroMagic);
+    window.addEventListener('pointermove', e => {
+      magicMouse.x = e.clientX;
+      magicMouse.y = e.clientY;
+    });
+    drawMagic();
+  }
+
+  // When ENTER is pressed, create one final magic burst from the CTA.
+  enterExperience.addEventListener('click', () => {
+    const r = enterExperience.getBoundingClientRect();
+    for(let i=0;i<85;i++){
+      const angle = Math.random()*Math.PI*2;
+      const radius = 8 + Math.random()*45;
+      magicParticles.push({
+        x:r.left+r.width/2,
+        y:r.top+r.height/2,
+        vx:Math.cos(angle)*radius*.035,
+        vy:Math.sin(angle)*radius*.035-1.2,
+        life:.9+Math.random()*.4,
+        size:Math.random()*3+1,
+        spin:Math.random()*Math.PI*2
+      });
+    }
+  });
+
+
+  /* ============================================================
+     MAP WALKER — A TINY INVISIBLE VISITOR EXPLORING THE PAGE
+     ============================================================ */
+  const mapCanvas = document.getElementById('mapMagicCanvas');
+  const mapCtx = mapCanvas ? mapCanvas.getContext('2d') : null;
+  const mapSteps = [];
+  const mapWalker = {
+    x: 0, y: 0, angle: 0, progress: 0,
+    segment: 0, stepCount: 0, nextStepAt: 0
+  };
+
+  const mapRoutes = [
+    // Gentle route around the hero/intro.
+    [
+      [.10,.72],[.17,.62],[.26,.68],[.35,.55],[.47,.60],
+      [.58,.50],[.68,.58],[.78,.46],[.88,.55]
+    ],
+    // Route across the presentation after the first world.
+    [
+      [.88,.55],[.80,.67],[.70,.61],[.61,.72],[.51,.64],
+      [.42,.76],[.31,.66],[.20,.76],[.11,.65]
+    ],
+    // Upper/lower scenic loop.
+    [
+      [.11,.65],[.18,.45],[.29,.38],[.40,.47],[.53,.36],
+      [.65,.44],[.77,.33],[.89,.40],[.84,.24],[.70,.20],
+      [.56,.27],[.43,.19],[.28,.27],[.16,.19]
+    ]
+  ];
+
+  function resizeMapCanvas(){
+    if(!mapCanvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    mapCanvas.width = window.innerWidth*dpr;
+    mapCanvas.height = window.innerHeight*dpr;
+    mapCanvas.style.width = window.innerWidth+'px';
+    mapCanvas.style.height = window.innerHeight+'px';
+    mapCtx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function routePoint(route, t){
+    const scaled = t*(route.length-1);
+    const i = Math.min(Math.floor(scaled), route.length-2);
+    const f = scaled-i;
+    const a = route[i], b = route[i+1];
+    const x = (a[0]+(b[0]-a[0])*f)*window.innerWidth;
+    const y = (a[1]+(b[1]-a[1]*1)*f)*window.innerHeight;
+    return {x,y};
+  }
+
+  function addMapStep(x,y,angle,side){
+    const step = document.createElement('span');
+    step.className = 'map-step ' + side;
+    step.style.left = (x-5)+'px';
+    step.style.top = (y-8)+'px';
+    step.style.setProperty('--angle', angle+'rad');
+    document.body.appendChild(step);
+    requestAnimationFrame(() => step.classList.add('is-visible'));
+    mapSteps.push(step);
+
+    // Keep the map clean and mysterious rather than filling the screen.
+    if(mapSteps.length > 34){
+      const old = mapSteps.shift();
+      old.remove();
+    }
+  }
+
+  function drawMapRoute(route){
+    if(!mapCtx) return;
+    mapCtx.save();
+    mapCtx.setLineDash([2,10]);
+    mapCtx.lineWidth = 1;
+    mapCtx.strokeStyle = 'rgba(244,223,150,.08)';
+    mapCtx.beginPath();
+    route.forEach((p,i)=>{
+      const x=p[0]*window.innerWidth;
+      const y=p[1]*window.innerHeight;
+      if(i===0) mapCtx.moveTo(x,y); else mapCtx.lineTo(x,y);
+    });
+    mapCtx.stroke();
+    mapCtx.restore();
+  }
+
+  function animateMapWalker(){
+    if(!mapCtx) return;
+
+    mapCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+    // Very subtle cartographic route lines.
+    mapRoutes.forEach(drawMapRoute);
+
+    const route = mapRoutes[mapWalker.segment % mapRoutes.length];
+    mapWalker.progress += 0.00055;
+
+    if(mapWalker.progress >= 1){
+      mapWalker.progress = 0;
+      mapWalker.segment = (mapWalker.segment+1) % mapRoutes.length;
+    }
+
+    const p = routePoint(route,mapWalker.progress);
+    const look = routePoint(route,Math.min(1,mapWalker.progress+.008));
+
+    mapWalker.x=p.x; mapWalker.y=p.y;
+    mapWalker.angle=Math.atan2(look.y-p.y,look.x-p.x);
+
+    // The walker leaves alternating footprints.
+    if(performance.now() > mapWalker.nextStepAt){
+      const side = mapWalker.stepCount % 2 === 0 ? 'left' : 'right';
+      const offset = side === 'left' ? -4 : 4;
+      const sx = p.x + Math.cos(mapWalker.angle+Math.PI/2)*offset;
+      const sy = p.y + Math.sin(mapWalker.angle+Math.PI/2)*offset;
+      addMapStep(sx,sy,mapWalker.angle+(side==='left'?-0.28:0.28),side);
+      mapWalker.stepCount++;
+      mapWalker.nextStepAt = performance.now()+420;
+    }
+
+    // Small "you are here" pulse.
+    if(!mapWalker.pulse){
+      const pulse=document.createElement('span');
+      pulse.className='walker-pulse';
+      document.body.appendChild(pulse);
+      mapWalker.pulse=pulse;
+    }
+    mapWalker.pulse.style.left=(p.x-2.5)+'px';
+    mapWalker.pulse.style.top=(p.y-2.5)+'px';
+
+    requestAnimationFrame(animateMapWalker);
+  }
+
+  if(mapCanvas){
+    resizeMapCanvas();
+    window.addEventListener('resize',resizeMapCanvas);
+    animateMapWalker();
+  }
 
 </script>
 
