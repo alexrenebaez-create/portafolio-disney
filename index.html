@@ -818,6 +818,55 @@
     .map-step,.walker-pulse{display:none;}
   }
 
+
+  /* ===== WORLD 06 · TIEMPO DE VIVIR ===== */
+  .tiempo-visual{background:#080b10;overflow:hidden;position:relative;}
+  .tiempo-image-wrap{position:absolute;inset:0;overflow:hidden;background:#080b10;}
+  .tiempo-art{
+    width:100%;height:100%;display:block;object-fit:cover;object-position:center;
+    transform:scale(1.025);
+    transition:transform 1.8s var(--ease-cinema),filter 1.2s ease;
+    filter:saturate(.9) contrast(1.02) brightness(.88);
+  }
+  .pitch.is-focused .tiempo-art,.tiempo-world.in-view .tiempo-art{
+    transform:scale(1.065);
+    filter:saturate(1) contrast(1.04) brightness(.98);
+  }
+  .tiempo-image-vignette{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(90deg,rgba(5,7,10,.34),transparent 42%,rgba(5,7,10,.08)),
+      linear-gradient(0deg,rgba(5,7,10,.38),transparent 38%,rgba(5,7,10,.18));
+    mix-blend-mode:multiply;
+  }
+  .tiempo-image-caption{
+    position:absolute;left:24px;right:24px;bottom:22px;
+    display:flex;justify-content:space-between;gap:12px;
+    font:500 .55rem/1.2 'IBM Plex Mono',monospace;
+    letter-spacing:.14em;text-transform:uppercase;
+    color:rgba(245,239,226,.72);
+    opacity:.72;
+  }
+  .tiempo-image-caption span:last-child{text-align:right;color:rgba(244,223,150,.82);}
+  .tiempo-world .pitch-tag .dot{box-shadow:0 0 12px rgba(216,182,90,.45);}
+  .tiempo-world .beat:hover{border-color:rgba(216,182,90,.32);background:rgba(216,182,90,.035);}
+  .tiempo-chips span{border-color:rgba(216,182,90,.28);}
+  @media (max-width:700px){
+    .tiempo-image-caption{left:14px;right:14px;bottom:14px;font-size:.48rem;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .tiempo-art{transform:none!important;filter:none!important;}
+  }
+
+
+  .tiempo-source-note{
+    margin-top:10px;
+    font:500 .5rem/1.4 'IBM Plex Mono',monospace;
+    letter-spacing:.08em;
+    color:rgba(245,239,226,.3);
+    text-transform:uppercase;
+  }
+
 </style>
 </head>
 <body class="premium-mode">
@@ -951,14 +1000,14 @@
   </div>
 
   <div class="hero-main">
-    <div class="eyebrow"><span class="t-es">Cinco conceptos creativos</span><span class="t-en">Five Creative Concepts</span></div>
+    <div class="eyebrow"><span class="t-es">Seis conceptos creativos</span><span class="t-en">Six Creative Concepts</span></div>
     <h2>
-      <span class="t-es">Ideas que nacen de<br><em>lo que ya amamos</em> — y una<br>que nace de mí.</span>
-      <span class="t-en">Ideas born from<br><em>what we already love</em> —<br>and one born from me.</span>
+      <span class="t-es">Ideas que nacen de<br><em>lo que ya amamos</em> — y dos<br>que nacen de mí.</span>
+      <span class="t-en">Ideas born from<br><em>what we already love</em> —<br>and two born from me.</span>
     </h2>
     <p class="hero-sub">
-      <span class="t-es">Un restaurante, dos atracciones y un resort inspirados en historias que ya conocemos, más una idea 100% original pensada para chicos.</span>
-      <span class="t-en">A restaurant, two rides and a resort inspired by stories we already know, plus one 100% original idea made for kids.</span>
+      <span class="t-es">Un restaurante, dos atracciones y un resort inspirados en historias que ya conocemos, más dos ideas 100% originales: una pensada para chicos y una historia cinematográfica sobre volver a sentir.</span>
+      <span class="t-en">A restaurant, two rides and a resort inspired by stories we already know, plus two 100% original ideas: one made for kids and one cinematic story about learning to feel again.</span>
     </p>
   </div>
 
@@ -969,6 +1018,7 @@
       <a href="#villanos"><span>03</span> <span class="t-es">Resort Disney Villanos</span><span class="t-en">Disney Villains Resort</span></a>
       <a href="#moana"><span>04</span> <span class="t-es">Ride Moana</span><span class="t-en">Moana Ride</span></a>
       <a href="#shaolin"><span>05</span> Baby Shaolin</a>
+      <a href="#tiempo"><span>06</span> <span class="t-es">Tiempo de Vivir</span><span class="t-en">Time to Live</span></a>
     </nav>
     <div class="scroll-cue"><span class="t-es">DESPLAZAR PARA VER LOS PITCHES ↓</span><span class="t-en">SCROLL TO SEE THE PITCHES ↓</span></div>
   </div>
@@ -983,7 +1033,7 @@
       <img src="SOUL.jpg" alt="Concepto Restaurante Soul">
     </div>
     <div class="pitch-text">
-      <span class="pitch-num">PITCH 01 / 05</span>
+      <span class="pitch-num">PITCH 01 / 06</span>
       <div class="pitch-tag"><span class="dot" style="background:#e3c766"></span><span class="t-es">Restaurante temático — inspirado en Soul</span><span class="t-en">Themed restaurant — inspired by Soul</span></div>
       <h3><span class="t-es">Restaurante Soul</span><span class="t-en">Soul Restaurant</span></h3>
       <p>
@@ -1013,7 +1063,7 @@
       <img src="COCO RIDE.jpg" alt="Concepto Coco Ride">
     </div>
     <div class="pitch-text">
-      <span class="pitch-num">PITCH 02 / 05</span>
+      <span class="pitch-num">PITCH 02 / 06</span>
       <div class="pitch-tag"><span class="dot" style="background:#ff8a3d"></span><span class="t-es">Montaña rusa — inspirada en Coco · Epcot, pabellón de México</span><span class="t-en">Roller coaster — inspired by Coco · Epcot, Mexico Pavilion</span></div>
       <h3>Coco Ride</h3>
       <p>
@@ -1040,7 +1090,7 @@
       <img src="resort.jpg" alt="Concepto Resort Disney Villanos">
     </div>
     <div class="pitch-text">
-      <span class="pitch-num">PITCH 03 / 05</span>
+      <span class="pitch-num">PITCH 03 / 06</span>
       <div class="pitch-tag"><span class="dot" style="background:#8f5fd6"></span><span class="t-es">Resort temático — villanos de Disney</span><span class="t-en">Themed resort — Disney villains</span></div>
       <h3><span class="t-es">Resort Disney Villanos</span><span class="t-en">Disney Villains Resort</span></h3>
       <p>
@@ -1068,7 +1118,7 @@
       <img src="MOANA.jpg" alt="Concepto Ride Moana">
     </div>
     <div class="pitch-text">
-      <span class="pitch-num">PITCH 04 / 05</span>
+      <span class="pitch-num">PITCH 04 / 06</span>
       <div class="pitch-tag"><span class="dot" style="background:#3ecfb2"></span><span class="t-es">Atracción simulador — inspirada en Moana</span><span class="t-en">Simulator ride — inspired by Moana</span></div>
       <h3><span class="t-es">Ride Moana</span><span class="t-en">Moana Ride</span></h3>
       <p>
@@ -1097,7 +1147,7 @@
       <img src="BABY SHAOLIN.jpg" alt="Concepto Baby Shaolin">
     </div>
     <div class="pitch-text">
-      <span class="pitch-num">PITCH 05 / 05</span>
+      <span class="pitch-num">PITCH 05 / 06</span>
       <div class="pitch-tag"><span class="dot" style="background:#e8542f"></span><span class="t-es">Serie animada — propiedad original</span><span class="t-en">Animated series — original property</span></div>
       <h3>Baby Shaolin</h3>
       <p>
@@ -1116,13 +1166,62 @@
         <button class="explore-btn" data-pitch="shaolin">EXPLORE BABY SHAOLIN <span class="arrow">→</span></button>
 </div></section>
 
+
+<!-- ============ 06 — TIEMPO DE VIVIR ============ -->
+<section class="pitch reverse tiempo-world" id="tiempo">
+  <div class="pitch-inner">
+    <div class="pitch-visual tiempo-visual">
+      <div class="world-ribbon">WORLD 06 · TIEMPO DE VIVIR</div>
+      <div class="image-scan"></div>
+      <div class="tiempo-image-wrap">
+        <img class="tiempo-art" src="tiempo-de-vivir.jpg"
+             alt="Tiempo de Vivir — Mark en una ciudad vacía, con una figura misteriosa al fondo">
+        <div class="tiempo-image-vignette"></div>
+        <div class="tiempo-image-caption">
+          <span>CONCEPT ART · TIEMPO DE VIVIR</span>
+          <span>MARK · THE EMPTY CITY</span>
+        </div>
+      </div>
+    </div>
+    <div class="pitch-text">
+      <span class="pitch-num">PITCH 06 / 06</span>
+      <div class="pitch-tag"><span class="dot" style="background:#d8b65a"></span><span class="t-es">Película animada — historia original</span><span class="t-en">Animated feature — original story</span></div>
+      <h3><span class="t-es">Tiempo de Vivir</span><span class="t-en">Time to Live</span></h3>
+      <p>
+        <span class="t-es">Una mañana, Mark se despierta para ir a trabajar como cualquier otro día. Cuando abre la ventana, encuentra una ciudad vacía. No hay tránsito, voces ni vecinos: solo una soledad imposible de explicar. Cree que está soñando, pero no lo está. Todos han desaparecido. La pregunta que lo persigue es tan simple como enorme: <strong>¿por qué él sigue aquí?</strong></span>
+        <span class="t-en">One morning, Mark wakes up to go to work like any other day. When he opens the window, he finds an empty city. No traffic, voices or neighbors: only a loneliness impossible to explain. He thinks he is dreaming, but he is not. Everyone is gone. The question haunting him is as simple as it is enormous: <strong>why is he still here?</strong></span>
+      </p>
+      <div class="beats">
+        <div class="beat"><div class="beat-mark t-es">MISTERIO</div><div class="beat-mark t-en">MYSTERY</div><div class="beat-text"><span class="t-es">Una ciudad intacta pero sin personas. Mark debe avanzar sin respuestas, mientras cada espacio cotidiano se convierte en una pista.</span><span class="t-en">A city intact but without people. Mark moves forward without answers, while every familiar place becomes a clue.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">EL ABUELO</div><div class="beat-mark t-en">THE GRANDFATHER</div><div class="beat-text"><span class="t-es">Los recuerdos de su abuelo —un marinero que le contaba historias de viajes y sucesos inimaginables— se convierten en una brújula emocional para interpretar lo que ocurre.</span><span class="t-en">Memories of his grandfather —a sailor who told him stories of journeys and unimaginable events— become an emotional compass for understanding what is happening.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">LA MUJER</div><div class="beat-mark t-en">THE WOMAN</div><div class="beat-text"><span class="t-es">En medio de la soledad aparece una mujer misteriosa que parece saber mucho más de lo ocurrido. Su presencia abre nuevas preguntas: ¿es una guía, una sobreviviente o parte del misterio?</span><span class="t-en">In the middle of the loneliness, a mysterious woman appears who seems to know far more than she says. Is she a guide, a survivor, or part of the mystery?</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">EL CORAZÓN</div><div class="beat-mark t-en">THE HEART</div><div class="beat-text"><span class="t-es">La película explora una idea central: en un mundo donde el afecto se volvió digital, quizá la única forma de salvarlo sea volver a tocar, abrazar, besar, sonreír y amar.</span><span class="t-en">The film explores a central idea: in a world where affection has become digital, perhaps the only way to save it is to touch, hug, kiss, smile and love again.</span></div></div>
+        <div class="beat"><div class="beat-mark t-es">VIAJE</div><div class="beat-mark t-en">JOURNEY</div><div class="beat-text"><span class="t-es">Un viaje de ida, lleno de misterio, memoria y vínculos humanos, donde la respuesta quizá no sea encontrar a los desaparecidos, sino descubrir por qué todavía somos capaces de sentir.</span><span class="t-en">A one-way journey filled with mystery, memory and human connection, where the answer may not be finding the missing, but discovering why we are still capable of feeling.</span></div></div>
+      </div>
+      <div class="menu-chips tiempo-chips"><span>ABRAZAR</span><span>SONREÍR</span><span>RECORDAR</span><span>AMAR</span></div>
+      <div class="tiempo-source-note">KEY ART · TIEMPO DE VIVIR</div>
+    </div>
+    <div class="pitch-hint"><span class="t-es">Una historia original · misterio, aventura y una pregunta sobre lo que significa volver a vivir</span><span class="t-en">An original story · mystery, adventure and a question about what it means to live again</span></div>
+    <button class="explore-btn" data-pitch="tiempo">EXPLORE TIEMPO DE VIVIR <span class="arrow">→</span></button>
+  </div>
+</section>
+
 <footer>
-  <h3><span class="t-es">Gracias por leer estos cinco pitches.</span><span class="t-en">Thanks for reading these five pitches.</span></h3>
+  <h3><span class="t-es">Gracias por recorrer estas seis historias.</span><span class="t-en">Thanks for exploring these six stories.</span></h3>
   <div class="foot-meta">
     ALEXIS BAEZ<br>
     <span class="t-es">Portafolio creativo — 2026</span><span class="t-en">Creative Portfolio — 2026</span>
   </div>
 </footer>
+
+  <div id="presentationBar" aria-label="Navegación de pitches">
+    <button class="pres-dot active" data-target="soul" aria-label="Pitch 1"></button>
+    <button class="pres-dot" data-target="coco" aria-label="Pitch 2"></button>
+    <button class="pres-dot" data-target="villanos" aria-label="Pitch 3"></button>
+    <button class="pres-dot" data-target="moana" aria-label="Pitch 4"></button>
+    <button class="pres-dot" data-target="shaolin" aria-label="Pitch 5"></button>
+    <button class="pres-dot" data-target="tiempo" aria-label="Pitch 6"></button>
+  </div>
 
 <script>
   function setLang(lang){
@@ -1153,7 +1252,8 @@
     coco:    { notes:[293.66,349.23,440.00,523.25], tempo:145 },
     villanos:{ notes:[220.00,277.18,329.63,415.30], tempo:220 },
     moana:   { notes:[261.63,329.63,392.00,587.33], tempo:155 },
-    shaolin: { notes:[293.66,369.99,440.00,554.37], tempo:135 }
+    shaolin: { notes:[293.66,369.99,440.00,554.37], tempo:135 },
+    tiempo:  { notes:[174.61,220.00,261.63,329.63], tempo:96 }
   };
 
   function ensureAudio(){
@@ -1557,7 +1657,8 @@
       coco: {type:'triangle',  base:293.66, duration:.75, shimmer:0.32},
       villanos:{type:'sawtooth',base:220.00,duration:.65, shimmer:0.08},
       moana:{type:'sine',      base:196.00, duration:1.15,shimmer:0.4},
-      shaolin:{type:'square',  base:146.83, duration:.55, shimmer:0.12}
+      shaolin:{type:'square',  base:146.83, duration:.55, shimmer:0.12},
+      tiempo:{type:'sine',    base:174.61, duration:1.55, shimmer:0.52}
     };
 
     const p = profiles[id] || profiles.soul;
@@ -1569,7 +1670,7 @@
 
     osc.type = p.type;
     osc.frequency.setValueAtTime(p.base, now);
-    osc.frequency.exponentialRampToValueAtTime(p.base * (id === 'moana' ? 2 : 1.5), now + p.duration);
+    osc.frequency.exponentialRampToValueAtTime(p.base * (id === 'moana' ? 2 : id === 'tiempo' ? 1.25 : 1.5), now + p.duration);
 
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(id === 'villanos' ? 1200 : 3000, now);
@@ -1837,16 +1938,25 @@
     animateMapWalker();
   }
 
+
+  /* ===== TIME TO LIVE KEY ART PARALLAX ===== */
+  const tiempoVisual = document.querySelector('.tiempo-visual');
+  const tiempoArt = document.querySelector('.tiempo-art');
+  if(tiempoVisual && tiempoArt){
+    tiempoVisual.addEventListener('pointermove', (e)=>{
+      const r = tiempoVisual.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width-.5;
+      const y = (e.clientY-r.top)/r.height-.5;
+      tiempoArt.style.transform =
+        `scale(1.065) translate3d(${x*10}px,${y*7}px,0)`;
+    });
+    tiempoVisual.addEventListener('pointerleave', ()=>{
+      tiempoArt.style.transform='';
+    });
+  }
+
 </script>
 
-
-  <div id="presentationBar" aria-label="Navegación de pitches">
-    <button class="pres-dot active" data-target="soul" aria-label="Pitch 1"></button>
-    <button class="pres-dot" data-target="coco" aria-label="Pitch 2"></button>
-    <button class="pres-dot" data-target="villanos" aria-label="Pitch 3"></button>
-    <button class="pres-dot" data-target="moana" aria-label="Pitch 4"></button>
-    <button class="pres-dot" data-target="shaolin" aria-label="Pitch 5"></button>
-  </div>
 
 </body>
 </html>
